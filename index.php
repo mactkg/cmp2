@@ -116,7 +116,10 @@ $app->group('/api', function() use ($app) {
   });
   
   $app->post('/events/new', function () use ($app) {
-    $app->render('index.html', array('title' => 'API', 'body' => 'create event'));
+    $id = create_event($app->request()->params());
+    $event = find_event_by_id($id);
+    
+    json_responce($app, $event);
   });
   
   ########################

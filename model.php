@@ -9,6 +9,7 @@ function get_db_connection() {
     "nobody",
     array(PDO::ATTR_EMULATE_PREPARES => false)
   );
+  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
   return $pdo;
 }
@@ -53,33 +54,34 @@ function find_event_by_id($id) {
 # 戻り値はID
 function create_event($array) {
   # data check
-  if(!array_key_exists($array['title'])) {
+  
+  if(!array_key_exists('title', $array)) {
     # 必要なデータがない場合は例外を投げてエラー報告してる
     throw new Exception('title required');
   }
-  if(!array_key_exists($array['date'])) {
+  if(!array_key_exists('date', $array)) {
     # value must be checked but not yet
     # TODO:check value
     throw new Exception('date required');
   }
-  if(!array_key_exists($array['place'])) {
+  if(!array_key_exists('place', $array)) {
     throw new Exception('place required');
   }
-  if(!array_key_exists($array['text_md'])) {
+  if(!array_key_exists('text_md', $array)) {
     throw new Exception('text_md required');
   }
-  if(!array_key_exists($array['deadline'])) {
+  if(!array_key_exists('deadline', $array)) {
     throw new Exception('deadline required');
   }
 
   $passkey = "abcde"; # TODO: inpl here later
-  $opendate = strtotime($array['date']);
   $created_at = date ("Y-m-d H:i:s"); # current time in SQL
   $updated_at = $created_at;
   
   $pdo = get_db_connection();
-  $stmt = $pdo->prepare('INSERT INTO events (
+  $stmt = $pdo->prepare('INSERT INTO events(
       title,
+      subtitle,
       date,
       place,
       text_md,
@@ -87,17 +89,18 @@ function create_event($array) {
       deadline,
       created_at,
       updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-  $stms->execute(array( #XXX: raw input
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+  $stmt->execute(array( #XXX: raw input
     $array['title'],
-    $opendate,
+    $array['subtitle'],
+    $array['date'],
     $array['place'],
     $array['text_md'],
     $passkey,
     $array['deadline'],
     $created_at,
     $updated_at));
-  $id = $stmt->lastInsertId();
+  $id = $pdo->lastInsertId();
   
   close_db_connection($pdo);
 
