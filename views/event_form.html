@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ event.title }}</title>
+
+  <link href="style.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+  <form action="/events/{{ event.id }}/edit?key={{ event.passkey }}" method="post">
+    <p>タイトル: <input name="title" type="text" value="{{ event.title }}"></p>
+    <p>サブタイトル・テーマ: <input name="subtitle" type="text" value="{{ event.subtitle }}"></p>
+    <p>説明文</p>
+    <p><textarea name="text_md">
+      {{ event.text_md }}
+    </textarea></p>
+    <p>会場: <input name="place" type="text" value="{{ event.place }}"></p>
+    <p>日時: <input name="date" type="datetime" value="{{ event.date }}"></p>
+    <p>投稿締切: <input name="deadline" type="datetime" value="{{ event.deadline }}"></p>
+    <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
+    <p><input type="submit" value="更新"></p>
+  </form>
+</body>
+</html>

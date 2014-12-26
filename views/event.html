@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ event.title }}</title>
+  
+  <link href="style.css" rel="stylesheet" type="text/css">
+  
+</head>
+<body>
+  <h2>[{{ event.id }}]{{ event.title }}</h2>
+  <h3>{{ event.subtitle }}</h3>
+  <p>{{ event.text_md }}</p>
+  <ul>
+    <li>日時: {{ event.date }}</li>
+    <li>会場: {{ event.place }}</li>
+    <li>締め切り: {{ event.deadline }}</li>
+    <li>作成日時: {{ event.created_at }}</li>
+    <li>最終更新日時: {{ event.updated_at }}</li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "require": {
+    "slim/slim": "2.*",
+    "slim/extras": "2.0.*",
+    "slim/views": "0.1.*",
+    "twig/twig": "1.*",
+    "pimple/pimple": "*",
+    "michelf/php-markdown": "1.*"
+  }
+}
