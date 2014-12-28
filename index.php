@@ -24,6 +24,7 @@ $app->get('/', function () use ($app) {
   $app->render('index.html', array('title' => 'タイトル', 'body' => 'welcome'));
 });
 
+
 ##################
 #  FRONT:evnets  #
 ##################
@@ -31,7 +32,8 @@ $app->get('/', function () use ($app) {
 $app->get('/events/:id', function ($id) use ($app) {
   $event = find_event_by_id($id);
   $app->render('event.html', array('event' => $event));
-});
+})->conditions(array('id' => '[0-9]+'));
+
 
 // mapはいろいろなHTTPメソッドを受け取れる
 // 最後にvia()でHTTPメソッドを指定する
@@ -54,6 +56,10 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
     // update event
     $app->redirect('/events/' . $id);
   }
+})->via('GET', 'POST')
+  ->conditions(array('id' => '[0-9]+'));
+
+
 })->via('GET', 'POST');
 
 $app->get('/events/new', function () use ($app) {
@@ -66,15 +72,18 @@ $app->get('/events/new', function () use ($app) {
 
 $app->get('/presentations/:id', function ($id) use ($app) {
   $app->render('index.html', array('title' => $id, 'body' => 'presentation'));
-});
+})->conditions(array('id' => '[0-9]+'));
+
 
 $app->get('/presentations/:id/edit', function ($id) use ($app) {
   $app->render('index.html', array('title' => $id, 'body' => 'edit presentation'));
-});
+})->conditions(array('id' => '[0-9]+'));
 
-$app->get('/presentations/:id/new', function ($id) use ($app) {
+
+$app->get('/presentations/new', function ($id) use ($app) {
   $app->redirect('/presentations' . $id . '/edit');
 });
+
 
 #################
 #      API      #
@@ -85,7 +94,7 @@ $app->group('/api', function() use ($app) {
   #################
   #  API::Events  #
   #################
-  
+
   $app->get('/events/:id', function ($id) use ($app) {
     $event = find_event_by_id($id);
     
@@ -96,7 +105,8 @@ $app->group('/api', function() use ($app) {
       $app->response()->header('Content-Type', 'application/json');
       echo json_encode(array('error' => 'event is not found'));
     }
-  });
+  })->conditions(array('id' => '[0-9]+'));
+  
   
   $app->get('/events/:id/talks', function ($id) use ($app) {
     $talks = find_talks_by_event_id($id, $app->request->params());
@@ -108,12 +118,14 @@ $app->group('/api', function() use ($app) {
       $app->response()->header('Content-Type', 'application/json');
       echo json_encode(array('error' => 'event is not found'));
     }
-  });
+  })->conditions(array('id' => '[0-9]+'));
+  
   
   $app->post('/events/:id/edit', function ($id) use ($app) {
     update_event_by_id($id, $array);
     $app->render('index.html', array('title' => 'API', 'body' => 'edit event'));
-  });
+  })->conditions(array('id' => '[0-9]+'));
+  
   
   $app->post('/events/new', function () use ($app) {
     $id = create_event($app->request()->params());
@@ -121,6 +133,7 @@ $app->group('/api', function() use ($app) {
     
     json_responce($app, $event);
   });
+  
   
   ########################
   #  API::presentations  #
@@ -135,12 +148,14 @@ $app->group('/api', function() use ($app) {
     } else {
       $app->response()->status(404);
     }
-  });
+  })->conditions(array('id' => '[0-9]+'));
+  
   
   $app->post('/talks/:id/edit', function ($id) use ($app) {
     update_talk_by_id($id, $array);
     $app->render('index.html', array('title' => 'API', 'body' => 'edit talk'));
-  });
+  })->conditions(array('id' => '[0-9]+'));
+  
   
   $app->post('/talks/new', function () use ($app) {
     $input = json_decode($app->request()->getBody());
