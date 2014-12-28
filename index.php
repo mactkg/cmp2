@@ -60,11 +60,15 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
   ->conditions(array('id' => '[0-9]+'));
 
 
+$app->map('/events/new', function () use ($app) {
+  if ($app->request->isGet()) {
+    $app->render('event_form.html', array('post_to' => '/events/new'));
+  } else if ($app->request->isPost()) {
+    $id = create_event($app->request->params());
+    $app->redirect('/events/'.$id);
+  }
 })->via('GET', 'POST');
 
-$app->get('/events/new', function () use ($app) {
-  $app->render('index.html', array('title' => 'new', 'body' => 'create event'));
-});
 
 #########################
 #  FRONT:presentations  #
