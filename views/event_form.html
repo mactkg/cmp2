@@ -7,7 +7,7 @@
 
 </head>
 <body>
-  <form action="/events/{{ event.id }}/edit?key={{ event.passkey }}" method="post">
+  <form action="{{ post_to }}" method="post">
     <p>タイトル: <input name="title" type="text" value="{{ event.title }}"></p>
     <p>サブタイトル・テーマ: <input name="subtitle" type="text" value="{{ event.subtitle }}"></p>
     <p>説明文</p>

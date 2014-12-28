@@ -51,7 +51,7 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
   }
   
   if ($app->request->isGet()) {
-    $app->render('event_form.html', array('event' => $event));
+    $app->render('event_form.html', array('post_to' => '/events/'.$event['id'].'/edit?key='.$event['passkey'],'event' => $event));
   } else if ($app->request->isPost()) {
     // update event
     $app->redirect('/events/' . $id);
