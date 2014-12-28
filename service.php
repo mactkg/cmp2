@@ -118,7 +118,58 @@ function create_event($array) {
 #
 # 戻り値はID?
 function update_event_by_id($id, $array) {
+  // classでvalidationしたほうがよさそう
+  if(!array_key_exists('title', $array)) {
+    # 必要なデータがない場合は例外を投げてエラー報告してる
+    throw new Exception('title required');
+  }
+  if(!array_key_exists('date', $array)) {
+    # value must be checked but not yet
+    # TODO:check value
+    throw new Exception('date required');
+  }
+  if(!array_key_exists('place', $array)) {
+    throw new Exception('place required');
+  }
+  if(!array_key_exists('text_md', $array)) {
+    throw new Exception('text_md required');
+  }
+  if(!array_key_exists('deadline', $array)) {
+    throw new Exception('deadline required');
+  }
   
+  $passkey = "abcde"; # TODO: inpl here later
+  $created_at = date ("Y-m-d H:i:s"); # current time in SQL
+  $updated_at = $created_at;
+  
+  $pdo = get_db_connection();
+  $stmt = $pdo->prepare('UPDATE events 
+      SET
+        title=?,
+        subtitle=?,
+        date=?,
+        place=?,
+        text_md=?,
+        deadline=?,
+        created_at=?,
+        updated_at=?
+      WHERE
+        id=?');
+  $stmt->execute(array( #XXX: raw input
+    $array['title'],
+    $array['subtitle'],
+    $array['date'],
+    $array['place'],
+    $array['text_md'],
+    $array['deadline'],
+    $created_at,
+    $updated_at,
+    $id));
+  $id = $pdo->lastInsertId();
+  
+  close_db_connection($pdo);
+  
+  return $id;
 }
 
 ###############
@@ -189,6 +240,13 @@ function create_talk_with_event_id($event_id, $array) {
   if(!array_key_exists($array['deadline'])) {
     throw new Exception('deadline required');
   }
+  if(!array_key_exists($array['event_id'])) {
+    throw new Exception('event_id required');
+  } else {
+    if(!find_event_by_id($id)) {
+      throw new Exception('event not found');
+    }
+  }
   
   $passkey = "abcde"; # TODO: inpl here later
   $opendate = strtotime ($array['date']);
@@ -203,6 +261,7 @@ function create_talk_with_event_id($event_id, $array) {
       text_md,
       passkey,
       deadline,
+      event_id,
       created_at,
       updated_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
@@ -213,6 +272,7 @@ function create_talk_with_event_id($event_id, $array) {
     $array['text_md'],
     $passkey,
     $array['deadline'],
+    $array['event_id'],
     $created_at,
     $updated_at));
   $id = $stmt->lastInsertId();

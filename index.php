@@ -11,7 +11,7 @@ $app->add(new Slim\Extras\Middleware\CsrfGuard());
 $view = $app->view();
 $view->setTemplatesDirectory('./views');
 
-require_once 'model.php';
+require_once 'service.php';
 require_once 'helper.php';
 
 session_start();
