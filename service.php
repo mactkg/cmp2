@@ -1,4 +1,6 @@
 <?php
+require_once "model.php";
+
 #######################
 #  methods for model  #
 #######################
@@ -34,8 +36,9 @@ function find_event_by_id($id) {
 
   $stmt = $pdo->prepare('SELECT * FROM events
                          WHERE id=?');
+  $stmt->setFetchMode(PDO::FETCH_CLASS, 'Event');
   $stmt->execute(array($id));
-  $event = $stmt->fetch();
+  $event = $stmt->fetch(PDO::FETCH_CLASS);
 
   close_db_connection($pdo);
 
@@ -52,32 +55,26 @@ function find_event_by_id($id) {
 #   - deadline: 投稿締め切り(String, required, format=YYYY-MM-DD hh:mm:ss)
 #
 # 戻り値はID
-function create_event($array) {
-  # data check
+function create_event($params) {
+  $event = new Event;
+  $event->title = $params['title'];
+  $event->subtitle = $params['subtitle'];
+  $event->date = $params['date'];
+  $event->place = $params['place'];
+  $event->text_md = $params['text_md'];
+  $event->passkey = $event->generatePass("abcdef");
+  $event->deadline = $params['deadline'];
+  # $passkey = $event->generatePass($params['key']);
+  $event->updateTimes();
   
-  if(!array_key_exists('title', $array)) {
-    # 必要なデータがない場合は例外を投げてエラー報告してる
-    throw new Exception('title required');
-  }
-  if(!array_key_exists('date', $array)) {
-    # value must be checked but not yet
-    # TODO:check value
-    throw new Exception('date required');
-  }
-  if(!array_key_exists('place', $array)) {
-    throw new Exception('place required');
-  }
-  if(!array_key_exists('text_md', $array)) {
-    throw new Exception('text_md required');
-  }
-  if(!array_key_exists('deadline', $array)) {
-    throw new Exception('deadline required');
+  # data check
+  try {
+    $event->isValid();
+  } catch (Exception $e) {
+    fputs(STDOUT,  var_dump($event));
+    return -1;
   }
 
-  $passkey = "abcde"; # TODO: inpl here later
-  $created_at = date ("Y-m-d H:i:s"); # current time in SQL
-  $updated_at = $created_at;
-  
   $pdo = get_db_connection();
   $stmt = $pdo->prepare('INSERT INTO events(
       title,
@@ -91,15 +88,15 @@ function create_event($array) {
       updated_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
   $stmt->execute(array( #XXX: raw input
-    $array['title'],
-    $array['subtitle'],
-    $array['date'],
-    $array['place'],
-    $array['text_md'],
-    $passkey,
-    $array['deadline'],
-    $created_at,
-    $updated_at));
+    $event->title,
+    $event->subtitle,
+    $event->date,
+    $event->place,
+    $event->text_md,
+    $event->passkey,
+    $event->deadline,
+    $event->created_at,
+    $event->updated_at));
   $id = $pdo->lastInsertId();
   
   close_db_connection($pdo);
@@ -117,30 +114,26 @@ function create_event($array) {
 #   - deadline: 投稿締め切り(String, required, format=YYYY-MM-DD hh:mm:ss)
 #
 # 戻り値はID?
-function update_event_by_id($id, $array) {
-  // classでvalidationしたほうがよさそう
-  if(!array_key_exists('title', $array)) {
-    # 必要なデータがない場合は例外を投げてエラー報告してる
-    throw new Exception('title required');
-  }
-  if(!array_key_exists('date', $array)) {
-    # value must be checked but not yet
-    # TODO:check value
-    throw new Exception('date required');
-  }
-  if(!array_key_exists('place', $array)) {
-    throw new Exception('place required');
-  }
-  if(!array_key_exists('text_md', $array)) {
-    throw new Exception('text_md required');
-  }
-  if(!array_key_exists('deadline', $array)) {
-    throw new Exception('deadline required');
+function update_event_by_id($id, $params) {
+  try {
+    $event = find_event_by_id($id);
+  } catch (Exception $e) {
+    return -1;
   }
   
-  $passkey = "abcde"; # TODO: inpl here later
-  $created_at = date ("Y-m-d H:i:s"); # current time in SQL
-  $updated_at = $created_at;
+  $event->title = $params['title'];
+  $event->subtitle = $params['subtitle'];
+  $event->date = $params['date'];
+  $event->place = $params['place'];
+  $event->text_md = $params['text_md'];
+  $event->deadline = $params['deadline'];
+  $event->updateTimes();
+
+  try {
+    $event->isValid();
+  } catch (Exception $e) {
+    return -1;
+  }  
   
   $pdo = get_db_connection();
   $stmt = $pdo->prepare('UPDATE events 
@@ -156,15 +149,15 @@ function update_event_by_id($id, $array) {
       WHERE
         id=?');
   $stmt->execute(array( #XXX: raw input
-    $array['title'],
-    $array['subtitle'],
-    $array['date'],
-    $array['place'],
-    $array['text_md'],
-    $array['deadline'],
-    $created_at,
-    $updated_at,
-    $id));
+    $event->title,
+    $event->subtitle,
+    $event->date,
+    $event->place,
+    $event->text_md,
+    $event->deadline,
+    $event->created_at,
+    $event->updated_at,
+    $event->id));
   $id = $pdo->lastInsertId();
   
   close_db_connection($pdo);

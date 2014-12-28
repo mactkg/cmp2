@@ -11,6 +11,7 @@ $app->add(new Slim\Extras\Middleware\CsrfGuard());
 $view = $app->view();
 $view->setTemplatesDirectory('./views');
 
+require_once 'model.php';
 require_once 'service.php';
 require_once 'helper.php';
 
@@ -50,14 +51,15 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
   }
   
   $event = find_event_by_id($id);
-  if($app->request->params('key') != $event['passkey']) {
+  $pass = $app->request->params('key');
+  if(!$event->passCheck($pass)) {
     $app->halt(403);
   }
   
   if ($app->request->isGet()) {
-    $app->render('event_form.html', array('post_to' => '/events/'.$event['id'].'/edit?key='.$event['passkey'],'event' => $event));
+    $app->render('event_form.html', array('post_to' => $event->editURL($pass),'event' => $event));
   } else if ($app->request->isPost()) {
-    // update event
+    update_event_by_id($id, $app->request->params());
     $app->redirect('/events/' . $id);
   }
 })->via('GET', 'POST')
@@ -68,6 +70,10 @@ $app->map('/events/new', function () use ($app) {
   if ($app->request->isGet()) {
     $app->render('event_form.html', array('post_to' => '/events/new'));
   } else if ($app->request->isPost()) {
+    $params = $app->request->params();
+    
+
+
     $id = create_event($app->request->params());
     $app->redirect('/events/'.$id);
   }
