@@ -32,7 +32,7 @@ $app->get('/', function () use ($app) {
 $app->get('/events/:id', function ($id) use ($app) {
   $event = find_event_by_id($id);
   if (!$event) {
-    $app->halt(404);
+    $app->notFound();
   } else {
     $app->render('event.html', array('event' => $event));
   }
@@ -172,6 +172,11 @@ $app->group('/api', function() use ($app) {
   });
   
 });
+
+$app->notFound(function () use ($app) {
+    $app->render('404.html');
+});
+
 
 ###########
 #  おまけ  #
