@@ -31,7 +31,11 @@ $app->get('/', function () use ($app) {
 
 $app->get('/events/:id', function ($id) use ($app) {
   $event = find_event_by_id($id);
-  $app->render('event.html', array('event' => $event));
+  if (!$event) {
+    $app->halt(404);
+  } else {
+    $app->render('event.html', array('event' => $event));
+  }
 })->conditions(array('id' => '[0-9]+'));
 
 
