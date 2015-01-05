@@ -47,17 +47,67 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
   
   // key check
   if(!array_key_exists('key', $app->request->params())) {
-    $app->halt(401, 'key required');
+    $app->halt(400, 'key required');
   }
   
   $event = find_event_by_id($id);
-  $pass = $app->request->params('key');
-  if(!$event->passCheck($pass)) {
+  $params = $app->request->params();
+  $pass = $params['key'];
+  if (!$event->pass_check($pass)) {
     $app->halt(403);
   }
   
   if ($app->request->isGet()) {
-    $app->render('event_form.html', array('post_to' => $event->editURL($pass),'event' => $event));
+    $app->render('event_form.html', array('post_to' => $event->edit_url($params), 'event' => $event));
+  } else if ($app->request->isPost()) {
+    update_event_by_id($id, $app->request->params());
+    $app->redirect('/events/' . $id);
+  }
+})->via('GET', 'POST')
+  ->conditions(array('id' => '[0-9]+'));
+
+$app->map('/events/new', function () use ($app) {
+  if ($app->request->isGet()) {
+    $app->render('event_form.html', array('post_to' => '/events/new'));
+  } else if ($app->request->isPost()) {
+    $params = $app->request->params();
+    $id = create_event($app->request->params());
+    $app->redirect('/events/'.$id);
+  }
+})->via('GET', 'POST');
+
+
+#################
+#  FRONT:talks  #
+#################
+
+$app->get('/talks/:id', function ($id) use ($app) {
+  $talk = find_talk_by_id($id);
+  if($talk == false) {
+    $app->notFound();
+  }
+  
+  fill_event_to_talk($talk);
+  $app->render('talk.html', array('talk' => $talk));
+})->conditions(array('id' => '[0-9]+'));
+
+
+$app->map('/talks/:id/edit', function ($id) use ($app) {
+
+  // key check
+  if (!array_key_exists('key', $app->request->params())) {
+    $app->halt(400, 'key required');
+  }
+
+  $talk = find_talk_by_id($id);
+  $params = $app->request->params();
+  $pass = $params['key'];
+  if(!$talk->pass_check($pass)) {
+    $app->halt(403);
+  }
+
+  if ($app->request->isGet()) {
+    $app->render('talk_form.html', array('post_to' => $talk->edit_url($params), 'talk' => $talk));
   } else if ($app->request->isPost()) {
     update_event_by_id($id, $app->request->params());
     $app->redirect('/events/' . $id);
@@ -66,37 +116,20 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
   ->conditions(array('id' => '[0-9]+'));
 
 
-$app->map('/events/new', function () use ($app) {
+$app->map('/talks/new', function () use ($app) {
+  if (!array_key_exists('event_id', $app->request->params())) {
+    $app->halt(400, 'event_id required');
+  }
+  
+  $params = $app->request->params();
+  $event_id = $params['event_id'];
   if ($app->request->isGet()) {
-    $app->render('event_form.html', array('post_to' => '/events/new'));
+    $app->render('talk_form.html', array('post_to' => '/talks/new?'.http_build_query($params)));
   } else if ($app->request->isPost()) {
-    $params = $app->request->params();
-    
-
-
-    $id = create_event($app->request->params());
-    $app->redirect('/events/'.$id);
+    $id = create_talk_with_event_id($event_id, $params);
+    $app->redirect('/talks/'.$id);
   }
 })->via('GET', 'POST');
-
-
-#########################
-#  FRONT:presentations  #
-#########################
-
-$app->get('/presentations/:id', function ($id) use ($app) {
-  $app->render('index.html', array('title' => $id, 'body' => 'presentation'));
-})->conditions(array('id' => '[0-9]+'));
-
-
-$app->get('/presentations/:id/edit', function ($id) use ($app) {
-  $app->render('index.html', array('title' => $id, 'body' => 'edit presentation'));
-})->conditions(array('id' => '[0-9]+'));
-
-
-$app->get('/presentations/new', function ($id) use ($app) {
-  $app->redirect('/presentations' . $id . '/edit');
-});
 
 
 #################

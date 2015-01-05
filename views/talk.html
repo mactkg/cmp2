@@ -1,0 +1,37 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ talk.title }}</title>
+  
+  <link href="style.css" rel="stylesheet" type="text/css">
+  
+</head>
+<body>
+  <h2>[{{ talk.id }}]{{ talk.title }}({{talk.sequence}}番目の発表)</h2>
+  <h3>{{ talk.team_name }}</h3>
+  <p>member</p>
+  <ul>
+  {% for member in talk.members %}
+    <li>{{member.name}}({{member.role}})</li>
+  {% endfor %}
+  </ul>
+  
+  <p>text</p>
+  <p>{{ talk.text_md }}</p>
+  
+  <p>link</p>
+  <ul>
+  {% for link in talk.links %}
+  {% if link != "" %}
+    <li><a href="{{ link }}">{{ link }}</a></li>
+  {% endif %}
+  {% endfor %}
+  </ul>
+  
+  <ul>
+    <li>作成日時: {{ talk.created_at }}</li>
+    <li>最終更新日時: {{ talk.updated_at }}</li>
+  </ul>
+  <p><a href="/events/{{ talk.event.id }}">イベントへ戻る</a></p>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ talk.title }}</title>
+
+  <link href="style.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+  <h1>Talk登録フォーム</h1>
+  <form action="{{ post_to }}" method="post">
+    <p>タイトル: <input name="title" type="text" value="{{ talk.title }}"></p>
+    <p>チーム名: <input name="team_name" type="text" value="{{ talk.team_name }}"></p>
+    <p>メンバー情報</p>
+    <dl>
+      {% for member in talk.members %}
+        <dt>メンバー{{ loop.index }}</dt>
+        <dd>名前: <input name="member{{ loop.index0 }}_name" type="text" value="{{ member.name }}"></dd>
+        <dd>役割: <input name="member{{ loop.index0 }}_role" type="text" value="{{ member.role }}"></dd>
+      {% else %}
+        {% for i in 0..4 %}
+          <dt>メンバー{{ loop.index }}</dt>
+          <dd>名前: <input name="member{{ loop.index0 }}_name" type="text" value="{{ member.name }}"></dd>
+          <dd>役割: <input name="member{{ loop.index0 }}_role" type="text" value="{{ member.role }}"></dd>
+        {% endfor %}
+      {% endfor %}
+    </dl>
+    <p>説明文</p>
+    <p><textarea name="text_md">
+      {{ talk.text_md }}
+    </textarea></p>
+    <p>参考URL</p>
+    <dl>
+      {% for link in talk.links %}
+        <dd><input name="link{{ loop.index0 }}" type="text" value="{{ link }}"></dd>
+      {% else %}
+        {% for i in 0..2 %}
+        <dd><input name="link{{ loop.index0 }}" type="text" value="{{ link }}"></dd>
+        {% endfor %}
+      {% endfor %}
+    </dl>
+    <p>プロフィール画像URL</p>
+    <dl>
+      <dd><input name="img_url" type="text" value="{{ talk.img_url }}"></dd>
+    </dl>
+    <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
+    <p><input type="submit" value="更新"></p>
+  </form>
+</body>
+</html>
