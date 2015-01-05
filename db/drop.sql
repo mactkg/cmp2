@@ -1,0 +1,1 @@
+DROP DATABASE fmfes, fmfes_test
