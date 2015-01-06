@@ -1,4 +1,4 @@
-CREATE USER nobody IDENTIFIED BY PASSWORD 'nobody';
+CREATE USER 'nobody'@'localhost' IDENTIFIED BY 'nobody';
 
 CREATE DATABASE fmfes;
 CREATE DATABASE fmfes_test;

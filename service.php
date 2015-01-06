@@ -6,7 +6,7 @@ require_once "model.php";
 #######################
 # DBとの接続開始
 function get_db_connection() {
-  $pdo = new PDO("mysql:host=localhost;dbname=fmfes;charset=utf8mb4",
+  $pdo = new PDO("mysql:host=127.0.0.1;dbname=fmfes;charset=utf8mb4",
     "nobody",
     "nobody",
     array(PDO::ATTR_EMULATE_PREPARES => false)
