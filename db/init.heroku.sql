@@ -11,10 +11,10 @@ CREATE TABLE events (
   `updated_at` datetime NOT NULL,
   `sequence_max` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE talks (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `team_name` varchar(255) NOT NULL,
   `members_json` text NOT NULL,
@@ -31,4 +31,4 @@ CREATE TABLE talks (
   KEY `event_id` (`event_id`),
   UNIQUE KEY `sequence` (`sequence`),
   CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
