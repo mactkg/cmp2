@@ -34,7 +34,7 @@ CREATE TABLE fmfes_test.events (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE fmfes.talks (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `team_name` varchar(255) NOT NULL,
   `members_json` text NOT NULL,
@@ -51,10 +51,10 @@ CREATE TABLE fmfes.talks (
   UNIQUE KEY `sequence` (`sequence`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE fmfes_test.talks (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `team_name` varchar(255) NOT NULL,
   `members_json` text NOT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE fmfes_test.talks (
   KEY `event_id` (`event_id`),
   UNIQUE KEY `sequence` (`sequence`),
   CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 GRANT ALL PRIVILEGES ON fmfes.* TO nobody@'%' IDENTIFIED BY 'nobody' WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON fmfes_test.* TO nobody@'%' IDENTIFIED BY 'nobody' WITH GRANT OPTION;
