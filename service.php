@@ -6,9 +6,15 @@ require_once "model.php";
 #######################
 # DBとの接続開始
 function get_db_connection() {
-  $pdo = new PDO("mysql:host=127.0.0.1;dbname=fmfes;charset=utf8mb4",
-    "nobody",
-    "nobody",
+  $url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+  $server = $url["host"];
+  $username = $url["user"];
+  $password = $url["pass"];
+  $db = substr($url["path"], 1);
+
+  $pdo = new PDO("mysql:host=".$server.";dbname=".$db.";charset=utf8mb4",
+    $username,
+    $password,
     array(PDO::ATTR_EMULATE_PREPARES => false)
   );
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
