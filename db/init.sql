@@ -1,3 +1,5 @@
+CREATE USER nobody IDENTIFIED BY PASSWORD 'nobody';
+
 CREATE DATABASE fmfes;
 CREATE DATABASE fmfes_test;
 
@@ -14,7 +16,7 @@ CREATE TABLE fmfes.events (
   `updated_at` datetime NOT NULL,
   `sequence_max` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE fmfes_test.events (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,7 +31,7 @@ CREATE TABLE fmfes_test.events (
   `updated_at` datetime NOT NULL,
   `sequence_max` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE fmfes.talks (
   `id` int(11) NOT NULL,
