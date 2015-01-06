@@ -220,12 +220,12 @@ function fill_event_to_talk(&$talk) {
 # TODO:order byが欲しい気がする
 function find_talks_by_event_id($event_id, $args) {
   $offset = 0;
-  if(array_key_exists($args['offset'])) {
+  if(array_key_exists('offset', $args)) {
     $offset = $args['offset'];
   }
   
   $limit = 20;
-  if(array_key_exists($args['limit'])) {
+  if(array_key_exists('limit', $args)) {
     $limit = $args['limit'];
   }
 
@@ -235,7 +235,7 @@ function find_talks_by_event_id($event_id, $args) {
                          LIMIT ? OFFSET ?');
   $stmt->setFetchMode(PDO::FETCH_CLASS, 'Talk');
   $stmt->execute(array($event_id, $limit, $offset));
-  $talks = $stmt->fetchAll(PDO::FETCH_CLASS);
+  $talks = $stmt->fetchAll(PDO::FETCH_CLASS, 'Talk');
   
   close_db_connection($pdo);
 
