@@ -32,10 +32,11 @@ $app->get('/', function () use ($app) {
 
 $app->get('/events/:id', function ($id) use ($app) {
   $event = find_event_by_id($id);
+  $talks = find_talks_by_event_id($id, array());
   if (!$event) {
     $app->notFound();
   } else {
-    $app->render('event.html', array('event' => $event));
+    $app->render('event.html', array('event' => $event, 'talks' => $talks));
   }
 })->conditions(array('id' => '[0-9]+'));
 

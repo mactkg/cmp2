@@ -1,22 +1,67 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
+  <meta charset=UTF-8>
   <title>{{ event.title }}</title>
-  
-  <link href="style.css" rel="stylesheet" type="text/css">
-  
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+  <!--<![endif]-->
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <p><a href="/talks/new?event_id={{ event.id }}">新しいtalkを追加する</a></p>
-  <h2>[{{ event.id }}]{{ event.title }}</h2>
-  <h3>{{ event.subtitle }}</h3>
-  <p>{{ event.text_md }}</p>
-  <ul>
-    <li>日時: {{ event.date }}</li>
-    <li>会場: {{ event.place }}</li>
-    <li>締め切り: {{ event.deadline }}</li>
-    <li>作成日時: {{ event.created_at }}</li>
-    <li>最終更新日時: {{ event.updated_at }}</li>
-  </ul>
+  <div id="header">
+    <h1>{{ event.title }}</h1>
+    <h4>{{ event.subtitle }}</h4>
+  </div>
+  <div id="event-create">
+  </div>
+  <div id="links">
+    <p><a class="pure-button" href="timer">タイマーへのリンク</a></p>
+  </div>
+  <div id="event-details">
+    <ul>
+      <li>開催日: {{ event.date }}</li>
+      <li>会場: {{ event.place }}</li>
+      <li>投稿締め切り: {{ event.deadline }}</li>
+    </ul>
+    <p>{{ event.text_md }}</p>
+  </div>
+  <div id="talks">
+    {% for talk in talks %}
+    {% if loop.index0%3 == 0 %}
+    <div class="talk-row pure-g">
+    {% endif %}
+      <div class="talk-container pure-u-1 pure-u-md-1-3">
+        <div class="talk">
+          <div class="talk-header">
+            <a href="/talks/{{ talk.id }}"><h2>{{ talk.title }}</h2></a>
+            <a href="/talks/{{ talk.id }}"><h3>{{ talk.team_name }}</h3></a>
+          </div>
+          <div class="talk-about">
+            {% if talk.img_url %}
+            <img class="talk-thum" src="{{ talk.img_url }}">
+            {% else %}
+
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% if loop.index0%3 == 2 %}
+    </div>
+    {% elseif loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <div id="presen-new">
+    <form method="post" action="show.html">
+      <input type=submit value="白紙のプレゼンを作成">
+    </form>
+  </div>
 </body>
 </html>

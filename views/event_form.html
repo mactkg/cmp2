@@ -1,24 +1,59 @@
-<html>
+ <!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>{{ event.title }}</title>
-
-  <link href="style.css" rel="stylesheet" type="text/css">
-
+<meta charset=UTF-8>
+<title>Eventの編集</title>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <form action="{{ post_to }}" method="post">
-    <p>タイトル: <input name="title" type="text" value="{{ event.title }}"></p>
-    <p>サブタイトル・テーマ: <input name="subtitle" type="text" value="{{ event.subtitle }}"></p>
-    <p>説明文</p>
-    <p><textarea name="text_md">
-      {{ event.text_md }}
-    </textarea></p>
-    <p>会場: <input name="place" type="text" value="{{ event.place }}"></p>
-    <p>日時: <input name="date" type="datetime" value="{{ event.date }}"></p>
-    <p>投稿締切: <input name="deadline" type="datetime" value="{{ event.deadline }}"></p>
-    <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
-    <p><input type="submit" value="更新"></p>
+<div id = "header">
+  <h1>イベント情報の更新</h1>
+</div>
+<div id = "links">
+  <a class="pure-button" href="show.html">イベント一覧に戻る</a>
+  <a class="pure-button" href="../events/backyard.html">バックヤードへのリンク</a>
+</div>
+<div id = "event_new">
+  <form class="pure-form pure-form-aligned" action="{{ post_to }}" method="post">
+    <fieldset>
+      <div class="pure-control-group">
+        <label for="title">タイトル</label>
+        <input id="title" name="title" type="text" placeholder="Title" value="{{ event.title }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="subtitle">サブタイトル</label>
+        <input id="subtitle" name="subtitle" type="text" placeholder="Sub Title" value="{{ event.subtitle }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="date">日付</label>
+        <input id="date" name="date" type="text" placeholder="Date" value="{{ event.date }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="place">場所</label>
+        <input id="place" name="place" type="text" placeholder="Place" value="{{ event.place }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="text_md">説明文</label>
+        <input id="text_md" name="text_md" type="text" placeholder="Text_md" value="{{ event.text_md }}">
+      </div>
+
+      <div class="pure-control-group">
+        <label for="dead_line">締切</label>
+        <input id="dead_line" name="deadline" type="text" placeholder="Dead_Line" value="{{ event.deadline }}">
+      </div>
+
+      <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
+
+      <div class="pure-controls">
+        <button type="submit" class="pure-button pure-button-primary">Submit</button>
+      </div>
+    </fieldset>
   </form>
+</div>
 </body>
 </html>

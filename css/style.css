@@ -1,0 +1,93 @@
+body {
+	background: #FFF;
+	font-family: "Lato", Arial, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", sans-serif;
+}
+
+ul {
+	list-style: none;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+#header {
+	padding: 10px;
+	background: #000;
+	font-size: 40px;
+	color: white;
+	text-align: center;
+}
+
+#header h1 {
+  margin: 4px; 
+}
+
+#header h4 {
+  margin: 4px;
+}
+
+#links {
+	margin: 10px 10px;
+}
+
+#event-details {
+	margin: 10px 10px;
+	background: white;
+}
+
+#timer-header {
+	margin: 10px 10px;
+	padding: 10px;
+	padding-left: 30px;
+	font-size: 40px;
+}
+
+.talk-row {
+  margin-bottom: 10px;
+}
+
+.talk {
+	margin: 10px 10px;
+	background: #e6e6e6;
+}
+
+.talk h2 {
+	margin: 0px;
+	padding: 10px;
+	text-align: center;
+}
+
+.talk-about {
+  max-height: 180px;
+  overflow: hidden;
+}
+
+.talk-thum {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.talk-header {
+	margin: 0px;
+	padding: 10px;
+	text-align: center;
+}
+
+.talk-header h3 {
+  color: #717171;
+  margin: 0;
+  font-size: 0.8em;
+}
+
+#event-new {
+	margin: 10px 10px;
+	background: white;
+	font-size: 20px;
+}
+
+#talk-new {
+	margin: 10px 10px;
+}
