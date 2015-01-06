@@ -163,7 +163,7 @@ $app->group('/api', function() use ($app) {
       echo json_encode($talks, JSON_UNESCAPED_UNICODE);
     } else {
       $app->response()->header('Content-Type', 'application/json');
-      echo json_encode(array('error' => 'event is not found'));
+      echo json_encode(array());
     }
   })->conditions(array('id' => '[0-9]+'));
   
