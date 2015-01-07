@@ -1,37 +1,41 @@
-<html>
+ <!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
+  <meta charset=UTF-8>
   <title>{{ talk.title }}</title>
-  
-  <link href="style.css" rel="stylesheet" type="text/css">
-  
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <h2>[{{ talk.id }}]{{ talk.title }}({{talk.sequence}}番目の発表)</h2>
-  <h3>{{ talk.team_name }}</h3>
-  <p>member</p>
-  <ul>
-  {% for member in talk.members %}
-    <li>{{member.name}}({{member.role}})</li>
-  {% endfor %}
-  </ul>
-  
-  <p>text</p>
-  <p>{{ talk.text_md }}</p>
-  
-  <p>link</p>
-  <ul>
-  {% for link in talk.links %}
-  {% if link != "" %}
-    <li><a href="{{ link }}">{{ link }}</a></li>
-  {% endif %}
-  {% endfor %}
-  </ul>
-  
-  <ul>
-    <li>作成日時: {{ talk.created_at }}</li>
-    <li>最終更新日時: {{ talk.updated_at }}</li>
-  </ul>
-  <p><a href="/events/{{ talk.event.id }}">イベントへ戻る</a></p>
+  <div id="header">
+    <h1>{{ talk.title }}</h1>
+    <h2>{{ talk.team_name }}</h2>
+  </div>
+    <div id="links">
+      <p><a class="pure-button" href="/events/{{ talk.event_id }}">イベント一覧へ戻る</a>
+      <a class="pure-button" href="edit.html">プレゼンを編集</a></p>
+  </div>
+  <div class="presen_details">
+    <p>member</p>
+    <ul>
+    {% for member in talk.members %}
+    {% if not member.name == "" %}
+      <li>{{member.name}}({{member.role}})</li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+    
+    <p>text</p>
+    <p>{{ talk.text_md }}</p>
+    
+    <p>link</p>
+    <ul>
+    {% for link in talk.links %}
+    {% if not link == "" %}
+      <li><a href="{{ link }}">{{ link }}</a></li>
+    {% endif %}
+    {% endfor %}
+    </ul>
+  </div>
 </body>
 </html>

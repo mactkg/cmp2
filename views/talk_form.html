@@ -1,50 +1,85 @@
-<html>
+ <!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
+  <meta charset=UTF-8>
+  {% if talk %}
   <title>{{ talk.title }}</title>
-
-  <link href="style.css" rel="stylesheet" type="text/css">
-
+  {% else %}
+  <title>発表を追加</title>
+  {% endif %} 
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <h1>Talk登録フォーム</h1>
-  <form action="{{ post_to }}" method="post">
-    <p>タイトル: <input name="title" type="text" value="{{ talk.title }}"></p>
-    <p>チーム名: <input name="team_name" type="text" value="{{ talk.team_name }}"></p>
-    <p>メンバー情報</p>
-    <dl>
-      {% for member in talk.members %}
-        <dt>メンバー{{ loop.index }}</dt>
-        <dd>名前: <input name="member{{ loop.index0 }}_name" type="text" value="{{ member.name }}"></dd>
-        <dd>役割: <input name="member{{ loop.index0 }}_role" type="text" value="{{ member.role }}"></dd>
-      {% else %}
-        {% for i in 0..4 %}
-          <dt>メンバー{{ loop.index }}</dt>
-          <dd>名前: <input name="member{{ loop.index0 }}_name" type="text" value="{{ member.name }}"></dd>
-          <dd>役割: <input name="member{{ loop.index0 }}_role" type="text" value="{{ member.role }}"></dd>
-        {% endfor %}
-      {% endfor %}
-    </dl>
-    <p>説明文</p>
-    <p><textarea name="text_md">
-      {{ talk.text_md }}
-    </textarea></p>
-    <p>参考URL</p>
-    <dl>
-      {% for link in talk.links %}
-        <dd><input name="link{{ loop.index0 }}" type="text" value="{{ link }}"></dd>
-      {% else %}
-        {% for i in 0..2 %}
-        <dd><input name="link{{ loop.index0 }}" type="text" value="{{ link }}"></dd>
-        {% endfor %}
-      {% endfor %}
-    </dl>
-    <p>プロフィール画像URL</p>
-    <dl>
-      <dd><input name="img_url" type="text" value="{{ talk.img_url }}"></dd>
-    </dl>
-    <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
-    <p><input type="submit" value="更新"></p>
-  </form>
+  <div id="header">
+    {% if talk %}
+    <h1>{{ talk.title }}</h1>
+    {% else %}
+    <h1>発表を追加</h1>
+    {% endif %}
+  </div>
+  <div id="links">
+    <a class="pure-button" href="/events/{{ talk.event_id }}">イベントに戻る</a>
+  </div>
+  <div id="event_new">
+    <form class="pure-form pure-form-aligned" action="{{ post_to }}" method="post">
+        <fieldset>
+            <div class="pure-control-group">
+                <label for="title">タイトル</label>
+                <input id="title" name="title" type="text" placeholder="Fmfes" value="{{ talk.title }}" required>
+            </div>
+
+            <div class="pure-control-group">
+                <label for="name">チーム名</label>
+                <input id="name" name="team_name" type="text" placeholder="橋本研Aチーム" value="{{ talk.team_name }}" required>
+            </div>
+
+            {% for member in talk.members %}
+            <div class="pure-control-group">
+              <label for="member{{ loop.index }}">メンバー{{ loop.index }}</label>
+              <input name="member{{ loop.index0 }}_name" type="text" placeholder="先端 太郎" value="{{ member.name }}">
+              <input name="member{{ loop.index0 }}_role" type="text" placeholder="PHPのプログラム" value="{{ member.role }}">
+            </div>
+            {% else %}
+            {% for i in 0..4 %}
+            <div class="pure-control-group">
+              <label for="member{{ loop.index }}">メンバー{{ loop.index }}</label>
+              <input name="member{{ loop.index0 }}_name" type="text" placeholder="先端 太郎">
+              <input name="member{{ loop.index0 }}_role" type="text" placeholder="PHPのプログラム">
+            </div>
+            {% endfor %}
+            {% endfor %}
+
+            <div class="pure-control-group">
+                <label for="details">詳細</label>
+                <textarea name="text_md" rows="5" cols="40" placeholder="ここにプレゼンの詳細を書いてください。" required></textarea>
+            </div>
+
+            {% for link in talk.links %}
+            <div class="pure-control-group">
+              <label for="link{{ loop.index }}">リンク{{ loop.index }}</label>
+              <input id="link{{ loop.index0 }}" type="text" placeholder="http://fmfes.tkgdis.co/" value="{{ link }}">
+            </div>
+            {% else %}
+            {% for i in 0..2 %}
+            <div class="pure-control-group">
+              <label for="link{{ loop.index }}">リンク{{ loop.index }}</label>
+              <input id="link{{ loop.index0 }}" type="text" placeholder="http://fmfes.tkgdis.co/" value="{{ link }}">
+            </div>
+            {% endfor %}
+            {% endfor %}
+            
+            <div class="pure-control-group">
+                <label for="image">画像</label>
+                <input id="image" type="text" placeholder="画像のURLを入力してください。">
+            </div>
+
+            <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
+            <div class="pure-controls">
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </div>
+        </fieldset>
+    </form>
+  </div>
 </body>
 </html>
