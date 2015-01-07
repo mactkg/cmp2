@@ -1,0 +1,22 @@
+{
+  "name": "fmfes",
+  "description": "cmp2",
+  "keywords": [
+    "fms",
+    "cmp2"
+  ],
+  "website": "https://tkgdis.co/",
+  "repository": "https://github.com/mactkg/cmp2",
+  "scripts": {
+    "postdeploy": "php db/deploy_to_heroku.php"
+  },
+  "env": {
+    "PHP_ENV": {
+      "description": "a value for decide whether an app is running on heroku or not",
+      "value": "heroku"
+    }
+  },
+  "addons": [
+    "cleardb:ignite"
+  ]
+}
