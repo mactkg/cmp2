@@ -125,7 +125,7 @@ $app->map('/talks/new', function () use ($app) {
   $params = $app->request->params();
   $event_id = $params['event_id'];
   if ($app->request->isGet()) {
-    $app->render('talk_form.html', array('post_to' => '/talks/new?'.http_build_query($params)));
+    $app->render('talk_form.html', array('event_id' => $event_id, 'post_to' => '/talks/new?'.http_build_query($params)));
   } else if ($app->request->isPost()) {
     $id = create_talk_with_event_id($event_id, $params);
     $app->redirect('/talks/'.$id);
