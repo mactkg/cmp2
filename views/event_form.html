@@ -7,44 +7,51 @@
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<div id = "header">
-  <h1>イベント情報の更新</h1>
-</div>
+{% if event %}
+  {% set vars = {'title': "イベント編集"} %}
+{% else %}
+  {% set vars = {'title': "イベント新規作成"} %}
+{% endif %}
+{% include 'header.html' with vars %}
 <div id = "links">
-  <a class="pure-button" href="show.html">イベント一覧に戻る</a>
-  <a class="pure-button" href="../events/backyard.html">バックヤードへのリンク</a>
+  {% if event %}
+  <a class="pure-button" href="/events/{{ event.id }}">イベントに戻る</a>
+  <a class="pure-button" href="backyard">バックヤードへのリンク</a>
+  {% else %}
+  <a class="pure-button" href="/">トップに戻る</a>
+  {% endif %}
 </div>
 <div id = "event_new">
   <form class="pure-form pure-form-aligned" action="{{ post_to }}" method="post">
     <fieldset>
       <div class="pure-control-group">
         <label for="title">タイトル</label>
-        <input id="title" name="title" type="text" placeholder="Title" value="{{ event.title }}">
+        <input id="title" name="title" type="text" placeholder="CMP演習2" value="{{ event.title }}">
       </div>
 
       <div class="pure-control-group">
         <label for="subtitle">サブタイトル</label>
-        <input id="subtitle" name="subtitle" type="text" placeholder="Sub Title" value="{{ event.subtitle }}">
+        <input id="subtitle" name="subtitle" type="text" placeholder="「F」にまつわる何か" value="{{ event.subtitle }}">
       </div>
 
       <div class="pure-control-group">
-        <label for="date">日付</label>
-        <input id="date" name="date" type="text" placeholder="Date" value="{{ event.date }}">
+        <label for="date">開催日時</label>
+        <input id="date" name="date" type="text" placeholder="2015/01/14 14:40:00" value="{{ event.date }}">
       </div>
 
       <div class="pure-control-group">
-        <label for="place">場所</label>
-        <input id="place" name="place" type="text" placeholder="Place" value="{{ event.place }}">
+        <label for="place">会場</label>
+        <input id="place" name="place" type="text" placeholder="低層棟5F ホール" value="{{ event.place }}">
       </div>
 
       <div class="pure-control-group">
         <label for="text_md">説明文</label>
-        <input id="text_md" name="text_md" type="text" placeholder="Text_md" value="{{ event.text_md }}">
+        <textarea name="text_md" rows="5" cols="40" placeholder="ここにプレゼンの詳細を書いてください。" required>{{ event.text_md }}</textarea>
       </div>
 
       <div class="pure-control-group">
-        <label for="dead_line">締切</label>
-        <input id="dead_line" name="deadline" type="text" placeholder="Dead_Line" value="{{ event.deadline }}">
+        <label for="dead_line">投稿締切</label>
+        <input id="dead_line" name="deadline" type="text" placeholder="2015/01/13 12:00:00" value="{{ event.deadline }}">
       </div>
 
       <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">

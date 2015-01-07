@@ -1,0 +1,25 @@
+<div id="menu" class="pure-g">
+  <div class="pure-u-1">
+    <a href="/"><h1>fmfes</h1></a>
+  </div>
+</div>
+{% if flash.message %}
+<div id="flash" class="flash-message pure-g">
+  <div class="pure-u-1">
+    <p>{{ flash.message|raw }}</p>
+  </div>
+</div>
+{% elseif flash.error %}
+<div id="flash" class="flash-error pure-g">
+  <div class="pure-u-1">
+    <p>{{ flash.error|raw }}</p>
+  </div>
+</div>
+{% endif %}
+
+{% if title or subtitle %}
+<div id="header">
+  <h1>{{ title }}</h1>
+  <h4>{{ subtitle }}</h4>
+</div>
+{% endif %}

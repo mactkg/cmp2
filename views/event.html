@@ -13,15 +13,10 @@
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <div id="header">
-    <h1>{{ event.title }}</h1>
-    <h4>{{ event.subtitle }}</h4>
-  </div>
-  <div id="event-create">
-  </div>
+{% include 'header.html' with {'title': event.title, 'subtitle': event.subtitle } %}
   <div id="links">
     <p><a class="pure-button" href="/talks/new?event_id={{ event.id }}">新しい発表を追加する</a>
-    <a class="pure-button" href="timer">タイマーへのリンク</a></p>
+    <!--a class="pure-button" href="timer">タイマーへのリンク</a--></p>
   </div>
   <div id="event-details">
     <ul>
@@ -46,7 +41,7 @@
             {% if talk.img_url %}
             <img class="talk-thum" src="{{ talk.img_url }}">
             {% else %}
-
+            <img class="talk-thum" src="/img/noimg.jpg">
             {% endif %}
           </div>
         </div>

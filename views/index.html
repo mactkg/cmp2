@@ -1,14 +1,54 @@
-<html>
+ <!DOCTYPE html>
+<html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>{{ title }}</title>
-  
-  <link href="style.css" rel="stylesheet" type="text/css">
-  
+  <meta charset=UTF-8>
+  <title>fmfes</title>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+  <!--<![endif]-->
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <h2>{{ title }}</h2>
-  <p>{{ body }}</p>
-  <p><a href="/route">おすすめ情報</a></p>
+{% include 'header.html' %}
+  <div id="links">
+    <p><a class="pure-button" href="/events/new">新規イベントの作成</a></p>
+  </div>
+  <div id="event-details">
+    <p>
+      <b>FMSのプログラミング発表会を円滑に進めるための便利ツールです！</b><br>
+      全プレゼンの一覧の閲覧はもちろん、過去の発表会の振り返りにも活用できます。
+    </p>
+  </div>
+  <div id="talks">
+    {% for event in events %}
+    {% if loop.index0%3 == 0 %}
+    <div class="talk-row pure-g">
+    {% endif %}
+      <div class="talk-container pure-u-1 pure-u-md-1-3">
+        <div class="talk">
+          <div class="talk-header">
+            <a href="/events/{{ event.id }}"><h2>{{ event.title }}</h2></a>
+            <a href="/events/{{ event.id }}"><h3>{{ event.subtitle }}</h3></a>
+          </div>
+          <div class="talk-about">
+            {% if event.img_url %}
+            <!--img class="talk-thum" src="{{ event.img_url }}"-->
+            {% else %}
+            <!--img class="talk-thum" src="/img/noimg.jpg"-->
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% if loop.index0%3 == 2 %}
+    </div>
+    {% elseif loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
 </body>
 </html>

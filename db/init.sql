@@ -48,7 +48,7 @@ CREATE TABLE fmfes.talks (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `sequence` (`sequence`),
+  UNIQUE KEY `sequence` (`sequence`,`event_id`),
   KEY `event_id` (`event_id`),
   CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
@@ -69,7 +69,7 @@ CREATE TABLE fmfes_test.talks (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `event_id` (`event_id`),
-  UNIQUE KEY `sequence` (`sequence`),
+  UNIQUE KEY `sequence` (`sequence`,`event_id`),
   CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 

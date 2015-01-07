@@ -29,6 +29,6 @@ CREATE TABLE talks (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `event_id` (`event_id`),
-  UNIQUE KEY `sequence` (`sequence`),
+  UNIQUE KEY `sequence` (`sequence`,`event_id`),
   CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

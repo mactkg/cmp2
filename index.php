@@ -22,7 +22,8 @@ session_start();
 ###############
 
 $app->get('/', function () use ($app) {
-  $app->render('index.html', array('title' => 'タイトル', 'body' => 'welcome'));
+  $events = find_events();
+  $app->render('index.html', array('events' => $events));
 });
 
 
@@ -110,8 +111,14 @@ $app->map('/talks/:id/edit', function ($id) use ($app) {
   if ($app->request->isGet()) {
     $app->render('talk_form.html', array('post_to' => $talk->edit_url($params), 'talk' => $talk));
   } else if ($app->request->isPost()) {
-    update_event_by_id($id, $app->request->params());
-    $app->redirect('/events/' . $id);
+    $result = update_talk_by_id($id, $params);
+    if($result == -1) {
+      $app->flash('error', 'エラーが発生しました。');
+    } else {
+      $url = $app->request->getUrl().$talk->edit_url(array("key" => $talk->passkey));
+      $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
+    }
+    $app->redirect('/events/' . $talk->event_id);
   }
 })->via('GET', 'POST')
   ->conditions(array('id' => '[0-9]+'));
@@ -214,7 +221,8 @@ $app->group('/api', function() use ($app) {
 });
 
 $app->notFound(function () use ($app) {
-    $app->render('404.html');
+  $app->flash('error', 'sorry! page is not found');
+  $app->redirect('/');
 });
 
 

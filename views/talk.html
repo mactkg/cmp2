@@ -3,39 +3,41 @@
 <head>
   <meta charset=UTF-8>
   <title>{{ talk.title }}</title>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <div id="header">
-    <h1>{{ talk.title }}</h1>
-    <h2>{{ talk.team_name }}</h2>
-  </div>
-    <div id="links">
+{% include 'header.html' with {'title': talk.title, 'subtitle': talk.team_name } %}
+  <div id="links">
       <p><a class="pure-button" href="/events/{{ talk.event_id }}">イベント一覧へ戻る</a>
-      <a class="pure-button" href="edit.html">プレゼンを編集</a></p>
+      <a class="pure-button" href="/talks/{{ talk.id }}/edit?key=abcdef">プレゼンを編集</a></p>
   </div>
-  <div class="presen_details">
-    <p>member</p>
+  <div class="talk-details">
     <ul>
-    {% for member in talk.members %}
-    {% if not member.name == "" %}
-      <li>{{member.name}}({{member.role}})</li>
-    {% endif %}
-    {% endfor %}
-    </ul>
-    
-    <p>text</p>
-    <p>{{ talk.text_md }}</p>
-    
-    <p>link</p>
-    <ul>
-    {% for link in talk.links %}
-    {% if not link == "" %}
-      <li><a href="{{ link }}">{{ link }}</a></li>
-    {% endif %}
-    {% endfor %}
-    </ul>
+      <li><h2>{{ talk.title }}</h2></li>
+      <div class="photo-size">
+        <img class="talk-thum" src="{{ talks.img_url }}">
+      </div>
+      <li><h3>{{ talk.tame_name }}</h3></li>
+      <ul>
+        {% for member in talk.members %}
+        {% if not member.name == "" %}
+          <li>{{member.name}}({{member.role}})</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      <li><h3>概要</h3></li>
+      <ul>
+        <li>{{ talk.text_md | nl2br }}</li>
+      </ul>
+      <li><h3>リンク</h3></li>
+      <ul>
+      {% for link in talk.links %}
+      {% if not link == "" %}
+        <li><a href="{{ link }}">{{ link }}</a></li>
+      {% endif %}
+      {% endfor %}
+      </ul>
   </div>
 </body>
 </html>

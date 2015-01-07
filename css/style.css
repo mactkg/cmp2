@@ -8,8 +8,52 @@ ul {
 }
 
 a {
-  color: black;
+  color: #111;
   text-decoration: none;
+}
+
+#menu {
+  padding: 8px;
+  background: #222;
+  color: #fff;
+}
+
+#menu h1 {
+  color: #fff;
+  margin: 4px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+#menu p {
+  margin: 4px;
+  font-size: 20px;
+}
+
+#flash {
+  padding: 0.3em 1em;
+  color: #fff;
+}
+
+#flash a {
+  font-weight: bold;
+  color: #edb087;
+}
+
+#flash a:hover {
+  color: #eaa270;
+}
+
+#flash p {
+  margin: 0.5em 0.3em;
+}
+
+.flash-message {
+  background: #1f8dd6;
+}
+
+.flash-error {
+  background: #d61f32;
 }
 
 #header {
@@ -21,7 +65,7 @@ a {
 }
 
 #header h1 {
-  margin: 4px; 
+  margin: 4px;
 }
 
 #header h4 {
@@ -35,6 +79,22 @@ a {
 #event-details {
   margin: 10px 10px;
   background: white;
+}
+
+#talk_details {
+  margin: 10px 10px;
+  padding: 1px 10px;
+  background: #E6E6E6;
+  border: gray solid 1px;
+}
+
+#talk_details h2{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+#talk_details h3{
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #timer-header {
@@ -60,7 +120,7 @@ a {
 }
 
 .talk-about {
-  max-height: 180px;
+  height: 180px;
   overflow: hidden;
 }
 
@@ -90,4 +150,8 @@ a {
 
 #talk-new {
   margin: 10px 10px;
+}
+
+.photo-size{
+  max-width: 200px;
 }

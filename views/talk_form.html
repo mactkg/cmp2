@@ -11,14 +11,16 @@
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-  <div id="header">
-    {% if talk %}
-    <h1>{{ talk.title }}</h1>
-    {% else %}
-    <h1>発表を追加</h1>
-    {% endif %}
-  </div>
+{% if talk %}
+  {% set vars = {'title': "発表の編集"} %}
+{% else %}
+  {% set vars = {'title': "発表を追加"} %}
+{% endif %}
+{% include 'header.html' with vars %}
   <div id="links">
+    {% if talk %}
+    {% set event_id = talk.event_id %}
+    {% endif %}
     <a class="pure-button" href="/events/{{ event_id }}">イベントに戻る</a>
   </div>
   <div id="event_new">
@@ -52,29 +54,32 @@
 
             <div class="pure-control-group">
                 <label for="details">詳細</label>
-                <textarea name="text_md" rows="5" cols="40" placeholder="ここにプレゼンの詳細を書いてください。" required></textarea>
+                <textarea name="text_md" rows="5" cols="40" placeholder="ここにプレゼンの詳細を書いてください。" required>{{ talk.text_md }}</textarea>
             </div>
 
             {% for link in talk.links %}
             <div class="pure-control-group">
               <label for="link{{ loop.index }}">リンク{{ loop.index }}</label>
-              <input id="link{{ loop.index0 }}" type="text" placeholder="http://fmfes.tkgdis.co/" value="{{ link }}">
+              <input id="link{{ loop.index0 }}" name="link{{ loop.index0 }}" type="text" placeholder="http://fmfes.tkgdis.co/" value="{{ link }}">
             </div>
             {% else %}
             {% for i in 0..2 %}
             <div class="pure-control-group">
               <label for="link{{ loop.index }}">リンク{{ loop.index }}</label>
-              <input id="link{{ loop.index0 }}" type="text" placeholder="http://fmfes.tkgdis.co/" value="{{ link }}">
+              <input id="link{{ loop.index0 }}" name="link{{ loop.index0 }}" type="text" placeholder="http://fmfes.tkgdis.co/" value="{{ link }}">
             </div>
             {% endfor %}
             {% endfor %}
             
             <div class="pure-control-group">
                 <label for="image">画像</label>
-                <input id="image" type="text" placeholder="画像のURLを入力してください。">
+                <input id="image" name="img_url" type="text" placeholder="画像のURLを入力してください。" value="{{ talk.img_url }}">
             </div>
 
             <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
+            {% if talk %}
+            <input type="hidden" name="event_id" value="{{ talk.event_id }}">
+            {% endif %}
             <div class="pure-controls">
                 <button type="submit" class="pure-button pure-button-primary">Submit</button>
             </div>

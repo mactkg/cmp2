@@ -58,6 +58,34 @@ function find_event_by_id($id) {
   return $event;
 }
 
+# eventを複数取得する
+# $event_id: イベントのID
+# args:
+#   offset: 何件目から読み込むか
+#   limit: $offsetから何件読み込むか
+function find_events($args = array()) {
+  $offset = 0;
+  if(array_key_exists('offset', $args)) {
+    $offset = $args['offset'];
+  }
+  
+  $limit = 20;
+  if(array_key_exists('limit', $args)) {
+    $limit = $args['limit'];
+  }
+  $pdo = get_db_connection();
+
+  $stmt = $pdo->prepare('SELECT * FROM events
+                         LIMIT ? OFFSET ?');
+  $stmt->setFetchMode(PDO::FETCH_CLASS, 'Event');
+  $stmt->execute(array($limit, $offset));
+  $events = $stmt->fetchAll(PDO::FETCH_CLASS, 'Event');
+
+  close_db_connection($pdo);
+
+  return $events;
+}
+
 # eventを作成する
 # array
 #   - title: イベントタイトル(String, required)
@@ -84,7 +112,8 @@ function create_event($params) {
   try {
     $event->is_valid();
   } catch (Exception $e) {
-    fputs(STDOUT,  var_dump($event));
+    print_stdout($e->getMessage());
+    print_stdout(var_dump($event));
     return -1;
   }
 
@@ -132,6 +161,7 @@ function update_event_by_id($id, $params) {
   try {
     $event = find_event_by_id($id);
   } catch (Exception $e) {
+    print_stdout($e->getMessage());
     return -1;
   }
   
@@ -146,6 +176,7 @@ function update_event_by_id($id, $params) {
   try {
     $event->is_valid();
   } catch (Exception $e) {
+    print_stdout($e->getMessage());
     return -1;
   }  
   
@@ -296,8 +327,8 @@ function create_talk_with_event_id($event_id, $params) {
   try {
     $talk->is_valid();
   } catch (Exception $e) {
-    echo $e->getMessage();
-    dump($talk);
+    print_stdout($e->getMessage());
+    print_stdout(var_dump($talk));
   }
 
   $pdo = get_db_connection();
@@ -367,19 +398,20 @@ function update_talk_by_id($id, $params) {
   try {
     $talk = find_talk_by_id($id);
   } catch (Exception $e) {
+    print_stdout($e->getMessage());
     return -1;
   }
 
   $links = array_filter($params, function($k) {
-    return preg_match('/^link[0-9]+$/', $k) === 0;
+    return preg_match('/^link[0-9]+$/', $k);
   }, ARRAY_FILTER_USE_KEY);
   
   $members_name = array_filter($params, function($k) {
-    return preg_match('/^member[0-9]+_name$/', $k) === 0;
+    return preg_match('/^member[0-9]+_name$/', $k);
   }, ARRAY_FILTER_USE_KEY);
   
   $members_role = array_filter($params, function($k) {
-    return preg_match('/^member[0-9]+_role$/', $k) === 0;
+    return preg_match('/^member[0-9]+_role$/', $k);
   }, ARRAY_FILTER_USE_KEY);
 
   $members = array_map(function($name, $role) {
@@ -390,8 +422,6 @@ function update_talk_by_id($id, $params) {
   $talk->team_name = $params['team_name'];
   $talk->text_md = $params['text_md'];
   $talk->img_url = $params['img_url'];
-  $talk->sequence = $params['title'];
-  $talk->event_id = $event_id;
   $talk->members = $members;
   $talk->links = $links;
   $talk->encode_json();
@@ -399,39 +429,39 @@ function update_talk_by_id($id, $params) {
   try {
     $talk->is_valid();
   } catch (Exception $e) {
-    fputs(STDOUT, var_dump($talk));
+    print_stdout($e->getMessage());
+    return -1;
   }
   $pdo = get_db_connection();
 
-  $stmt = $pdo->prepare('INSERT INTO events (
-      title,
-      team_name,
-      members_json,
-      text_md,
-      links_json,
-      passkey,
-      img_url,
-      status,
-      sequence,
-      event_id,
-      created_at,
-      updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+  $stmt = $pdo->prepare('UPDATE talks
+      SET
+        title=?,
+        team_name=?,
+        members_json=?,
+        text_md=?,
+        links_json=?,
+        img_url=?,
+        `status`=?,
+        event_id=?,
+        created_at=?,
+        updated_at=?
+      WHERE
+        id=?');
   $stmt->execute(array( #XXX: raw input
     $talk->title,
     $talk->team_name,
     $talk->members_json,
     $talk->text_md,
     $talk->links_json,
-    $talk->passkey,
     $talk->img_url,
     $talk->status,
-    $event->sequence_max+1,
     $talk->event_id,
     $talk->created_at,
-    $talk->updated_at));
+    $talk->updated_at,
+    $talk->id));
   
-  $id = $stmt->lastInsertId();
+  $id = $pdo->lastInsertId();
   
   close_db_connection($pdo);
   
