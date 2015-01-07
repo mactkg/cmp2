@@ -264,8 +264,6 @@ function create_talk_with_event_id($event_id, $params) {
     throw new Exception('event not found');
   }
 
-  dump($event);
-
   $links = array_filter($params, function($k) {
     return preg_match('/^link[0-9]+$/', $k);
   }, ARRAY_FILTER_USE_KEY);
@@ -298,8 +296,8 @@ function create_talk_with_event_id($event_id, $params) {
   try {
     $talk->is_valid();
   } catch (Exception $e) {
-    fputs(STDOUT, $e->getMessage());
-    fputs(STDOUT, var_dump($talk));
+    echo $e->getMessage();
+    dump($talk);
   }
 
   $pdo = get_db_connection();
