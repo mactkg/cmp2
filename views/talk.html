@@ -15,10 +15,12 @@
   <div class="talk-details">
     <ul>
       <li><h2>{{ talk.title }}</h2></li>
+      {% if talks.img_url %}
       <div class="photo-size">
         <img class="talk-thum" src="{{ talks.img_url }}">
       </div>
-      <li><h3>{{ talk.tame_name }}</h3></li>
+      {% endif %}
+      <li><h3>by {{ talk.team_name }}</h3></li>
       <ul>
         {% for member in talk.members %}
         {% if not member.name == "" %}
