@@ -7,4 +7,4 @@ $username = $url["user"];
 $password = $url["pass"];
 $db = substr($url["path"], 1);
 
-exec(sprintf("mysql --host=%s --user=%s --password=%s %s < %s", $server, $uesrname, $password, $db, $path));
+exec(sprintf("mysql --host=%s --user=%s --password=%s %s < %s", $server, $username, $password, $db, $path));
