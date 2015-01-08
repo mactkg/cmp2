@@ -15,9 +15,9 @@
   <div class="talk-details">
     <ul>
       <li><h2>{{ talk.title }}</h2></li>
-      {% if talks.img_url %}
+      {% if talk.img_url %}
       <div class="photo-size">
-        <img class="talk-thum" src="{{ talks.img_url }}">
+        <img class="talk-thum" src="{{ talk.img_url }}">
       </div>
       {% endif %}
       <li><h3>by {{ talk.team_name }}</h3></li>
