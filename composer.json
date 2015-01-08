@@ -5,6 +5,7 @@
     "slim/views": "0.1.*",
     "twig/twig": "1.*",
     "pimple/pimple": "*",
+    "aptoma/twig-markdown": "0.2.*",
     "michelf/php-markdown": "1.*"
   },
   "require-dev": {

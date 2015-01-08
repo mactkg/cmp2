@@ -4,8 +4,62 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8af49dcb8601ad184c17f274f64db7f0",
+    "hash": "19fa7522f6eb8f03404039f193af50c3",
     "packages": [
+        {
+            "name": "aptoma/twig-markdown",
+            "version": "0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aptoma/twig-markdown.git",
+                "reference": "2c0972ecdaf5c94a0dec01b7c9af7919f2c6498d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aptoma/twig-markdown/zipball/2c0972ecdaf5c94a0dec01b7c9af7919f2c6498d",
+                "reference": "2c0972ecdaf5c94a0dec01b7c9af7919f2c6498d",
+                "shasum": ""
+            },
+            "require": {
+                "twig/twig": "~1"
+            },
+            "require-dev": {
+                "dflydev/markdown": "~1",
+                "michelf/php-markdown": "~1"
+            },
+            "suggest": {
+                "dflydev/markdown": "Markdown engine based on the simple michelf/php-markdown engine.",
+                "michelf/php-markdown": "Original Markdown engine with MarkdownExtra."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Aptoma": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gunnar Lium",
+                    "email": "gunnar@aptoma.com",
+                    "homepage": "https://github.com/gunnarlium",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Joris Berthelot",
+                    "email": "joris@berthelot.tel"
+                }
+            ],
+            "description": "Twig extension to work with Markdown content",
+            "keywords": [
+                "markdown",
+                "twig"
+            ],
+            "time": "2013-09-26 15:14:08"
+        },
         {
             "name": "michelf/php-markdown",
             "version": "1.4.1",
@@ -1117,17 +1171,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.6.1",
+            "version": "v2.6.3",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20"
+                "reference": "82462a90848a52c2533aa6b598b107d68076b018"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/3346fc090a3eb6b53d408db2903b241af51dcb20",
-                "reference": "3346fc090a3eb6b53d408db2903b241af51dcb20",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/82462a90848a52c2533aa6b598b107d68076b018",
+                "reference": "82462a90848a52c2533aa6b598b107d68076b018",
                 "shasum": ""
             },
             "require": {
@@ -1160,7 +1214,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-12-02 20:19:20"
+            "time": "2015-01-03 15:33:07"
         }
     ],
     "aliases": [],
