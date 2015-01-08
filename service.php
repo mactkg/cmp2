@@ -129,7 +129,7 @@ function create_event($params) {
       deadline,
       created_at,
       updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
   $stmt->execute(array( #XXX: raw input
     $event->title,
     $event->subtitle,
