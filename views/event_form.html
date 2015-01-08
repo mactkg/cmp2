@@ -28,7 +28,7 @@
     <fieldset>
       <div class="pure-control-group">
         <label for="title">タイトル</label>
-        <input id="title" name="title" type="text" placeholder="CMP演習2" value="{{ event.title }}">
+        <input id="title" name="title" type="text" placeholder="CMP演習2" value="{{ event.title }}" required>
       </div>
 
       <div class="pure-control-group">
@@ -38,12 +38,12 @@
 
       <div class="pure-control-group">
         <label for="date">開催日時</label>
-        <input id="date" name="date" type="text" placeholder="2015/01/14 14:40:00" value="{{ event.date }}">
+        <input id="date" name="date" type="text" placeholder="2015/01/14 14:40:00" value="{{ event.date }}" required>
       </div>
 
       <div class="pure-control-group">
         <label for="place">会場</label>
-        <input id="place" name="place" type="text" placeholder="低層棟5F ホール" value="{{ event.place }}">
+        <input id="place" name="place" type="text" placeholder="低層棟5F ホール" value="{{ event.place }}" required>
       </div>
 
       <div class="pure-control-group editor-group">
@@ -57,7 +57,7 @@
       <div class="cf"></div>
       <div class="pure-control-group">
         <label for="dead_line">投稿締切</label>
-        <input id="dead_line" name="deadline" type="text" placeholder="2015/01/13 12:00:00" value="{{ event.deadline }}">
+        <input id="dead_line" name="deadline" type="text" placeholder="2015/01/13 12:00:00" value="{{ event.deadline }}" required>
       </div>
 
       <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
