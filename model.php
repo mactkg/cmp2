@@ -8,6 +8,7 @@ class Event {
   public $place = NULL;
   public $text_md = NULL;
   public $passkey = NULL;
+  public $img_url = NULL;
   public $deadline = NULL;
   public $sequence_max = NULL;
   public $created_at = NULL;

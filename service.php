@@ -105,6 +105,7 @@ function create_event($params) {
   $event->text_md = $params['text_md'];
   $event->passkey = $event->generate_pass();
   $event->deadline = $params['deadline'];
+  $event->img_url = $params['img_url'];
   $event->update_times();
   
   # data check
@@ -124,6 +125,7 @@ function create_event($params) {
       place,
       text_md,
       passkey,
+      img_url,
       deadline,
       created_at,
       updated_at
@@ -135,6 +137,7 @@ function create_event($params) {
     $event->place,
     $event->text_md,
     $event->passkey,
+    $event->img_url,
     $event->deadline,
     $event->created_at,
     $event->updated_at));
@@ -170,6 +173,7 @@ function update_event_by_id($id, $params) {
   $event->place = $params['place'];
   $event->text_md = $params['text_md'];
   $event->deadline = $params['deadline'];
+  $event->img_url = $params['img_url'];
   $event->update_times();
 
   try {
@@ -188,6 +192,7 @@ function update_event_by_id($id, $params) {
         place=?,
         text_md=?,
         deadline=?,
+        img_url=?,
         created_at=?,
         updated_at=?
       WHERE
@@ -199,6 +204,7 @@ function update_event_by_id($id, $params) {
     $event->place,
     $event->text_md,
     $event->deadline,
+    $event->img_url,
     $event->created_at,
     $event->updated_at,
     $event->id));

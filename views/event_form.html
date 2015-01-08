@@ -60,6 +60,11 @@
         <input id="dead_line" name="deadline" type="text" placeholder="2015/01/13 12:00:00" value="{{ event.deadline }}" required>
       </div>
 
+      <div class="pure-control-group">
+        <label for="image">画像</label>
+        <input id="image" name="img_url" type="text" placeholder="画像のURLを入力してください。" value="{{ event.img_url }}">
+      </div>
+
       <input type="hidden" name="{{ csrf_key }}" value="{{ csrf_token }}">
 
       <div class="pure-controls">

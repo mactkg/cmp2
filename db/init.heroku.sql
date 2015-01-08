@@ -6,6 +6,7 @@ CREATE TABLE events (
   `place` varchar(255) NOT NULL,
   `text_md` text NOT NULL,
   `passkey` char(25) NOT NULL,
+  `img_url` text,
   `deadline` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
