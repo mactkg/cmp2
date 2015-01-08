@@ -30,7 +30,7 @@ session_start();
 ###############
 
 $app->get('/', function () use ($app) {
-  $events = find_events();
+  $events = array_reverse(find_events());
   $app->render('index.html', array('events' => $events));
 });
 
