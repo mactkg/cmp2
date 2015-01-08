@@ -6,5 +6,9 @@
     "twig/twig": "1.*",
     "pimple/pimple": "*",
     "michelf/php-markdown": "1.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.4.*",
+    "phpunit/dbunit": "1.3.*"
   }
 }
