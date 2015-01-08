@@ -1,10 +1,10 @@
 <?php
 require_once "service.php";
 $path = realpath("db/init.heroku.sql");
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$server = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$db = substr($url["path"], 1);
 
-$pdo = get_db_connection();
-
-$stmt = $pdo->prepare('SOURCE ?');
-$stmt->execute(array($path));
-
-close_db_connection($pdo);
+exec(sprintf("mysql --host=%s --user=%s --password=%s %s < %s", $server, $uesrname, $password, $db, $path));
