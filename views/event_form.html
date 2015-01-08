@@ -5,6 +5,8 @@
 <title>Eventの編集</title>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.5.0/pure-min.css">
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<script type="text/javascript" src="/js/epiceditor.min.js"></script>
+<script type="text/javascript" src="/js/form.js"></script>
 </head>
 <body>
 {% if event %}
@@ -44,11 +46,15 @@
         <input id="place" name="place" type="text" placeholder="低層棟5F ホール" value="{{ event.place }}">
       </div>
 
-      <div class="pure-control-group">
+      <div class="pure-control-group editor-group">
         <label for="text_md">説明文</label>
-        <textarea name="text_md" rows="5" cols="40" placeholder="ここにプレゼンの詳細を書いてください。" required>{{ event.text_md }}</textarea>
+        <div id="epiceditor-wrapper">
+          <p><a target="_blank" href="http://kojika17.com/2013/01/starting-markdown.html">Markdown記法</a>が使えます</p>
+          <div id="epiceditor" class="pure-form-aligned"></div>
+        </div>
+        <textarea id="text_md" name="text_md" rows="5" cols="40" required>{{ event.text_md }}</textarea>
       </div>
-
+      <div class="cf"></div>
       <div class="pure-control-group">
         <label for="dead_line">投稿締切</label>
         <input id="dead_line" name="deadline" type="text" placeholder="2015/01/13 12:00:00" value="{{ event.deadline }}">

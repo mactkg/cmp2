@@ -24,7 +24,7 @@
       <li>会場: {{ event.place }}</li>
       <li>投稿締め切り: {{ event.deadline }}</li>
     </ul>
-    <p>{{ event.text_md | nl2br }}</p>
+    <div class="md">{{ event.text_md | markdown }}</div>
   </div>
   <div id="talks">
     {% for talk in talks %}

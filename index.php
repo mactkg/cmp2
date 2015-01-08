@@ -1,6 +1,9 @@
 <?php
 require('./vendor/autoload.php');
 
+use Aptoma\Twig\Extension\MarkdownExtension;
+use Aptoma\Twig\Extension\MarkdownEngine;
+
 $app = new \Slim\Slim(array(
             'view' => new Slim\Views\Twig(),
             'templates.path' => 'views',
@@ -10,6 +13,11 @@ $app = new \Slim\Slim(array(
 $app->add(new Slim\Extras\Middleware\CsrfGuard());
 $view = $app->view();
 $view->setTemplatesDirectory('./views');
+
+$engine = new MarkdownEngine\MichelfMarkdownEngine();
+$view->parserExtensions = array(
+  new MarkdownExtension($engine),
+);
 
 require_once 'model.php';
 require_once 'service.php';

@@ -33,14 +33,15 @@ class Event {
       throw new Exception('deadline required');
     }
   }
-  
-  # TODO: inpl here later
-  public static function generate_pass($rawkey) {
-    return $rawkey;
+
+  public static function generate_pass() {
+    $chars = "abcdefghijklmnopqrstmactkguvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=?";
+    $password = substr( str_shuffle( $chars ), 0, 8 );
+    return $password;
   }
 
   public function pass_check($pass) {
-    return $this->generate_pass($pass) == $this->passkey;
+    return $pass == $this->passkey;
   }
 
   public function update_times() {
@@ -99,34 +100,35 @@ class Talk {
       throw new Exception('event_id required');
     }
   }
-  
-  # TODO: inpl here later
-  public static function generate_pass($rawkey) {
-    return $rawkey;
+
+  public static function generate_pass() {
+    $chars = "abcdefghijklmnopqrstmactkguvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-=?";
+    $password = substr( str_shuffle( $chars ), 0, 8 );
+    return $password;
   }
   
   public function pass_check($pass) {
-    return $this->generate_pass($pass) == $this->passkey;
+    return $pass == $this->passkey;
   }
-  
+
   public function update_times() {
     $this->updated_at = date ("Y-m-d H:i:s"); # current time in SQL
     if($this->created_at == NULL) {
       $this->created_at = $this->updated_at;
     }
   }
-  
+
   # XXX: カッコ悪い
   public function encode_json() {
     $this->members_json = json_encode($this->members);
     $this->links_json = json_encode($this->links);
   }
-  
+
   public function decode_json() {
     $this->members = json_decode($this->members_json, true);
     $this->links = json_decode($this->links_json, true);
   }
-  
+
   public function edit_url($params) {
     return '/talks/'.$this->id.'/edit?'.http_build_query($params);
   }

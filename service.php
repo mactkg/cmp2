@@ -103,9 +103,8 @@ function create_event($params) {
   $event->date = $params['date'];
   $event->place = $params['place'];
   $event->text_md = $params['text_md'];
-  $event->passkey = $event->generate_pass("abcdef");
+  $event->passkey = $event->generate_pass();
   $event->deadline = $params['deadline'];
-  # $passkey = $event->generatePass($params['key']);
   $event->update_times();
   
   # data check
@@ -318,7 +317,7 @@ function create_talk_with_event_id($event_id, $params) {
   $talk->img_url = $params['img_url'];
   $talk->sequence = $event->sequence_max + 1;
   $talk->event_id = $event_id;
-  $talk->passkey = $talk->generate_pass("abcdef");
+  $talk->passkey = $talk->generate_pass();
   $talk->members = $members;
   $talk->links = $links;
   $talk->encode_json();

@@ -9,6 +9,8 @@
   {% endif %} 
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pure/0.5.0/pure-min.css">
   <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <script type="text/javascript" src="/js/epiceditor.min.js"></script>
+  <script type="text/javascript" src="/js/form.js"></script>
 </head>
 <body>
 {% if talk %}
@@ -51,11 +53,16 @@
             </div>
             {% endfor %}
             {% endfor %}
-
-            <div class="pure-control-group">
-                <label for="details">詳細</label>
-                <textarea name="text_md" rows="5" cols="40" placeholder="ここにプレゼンの詳細を書いてください。" required>{{ talk.text_md }}</textarea>
+            
+            <div class="pure-control-group editor-group">
+              <label for="text_md">説明文</label>
+              <div id="epiceditor-wrapper">
+                <p><a target="_blank" href="http://kojika17.com/2013/01/starting-markdown.html">Markdown記法</a>が使えます</p>
+                <div id="epiceditor" class="pure-form-aligned"></div>
+              </div>
+              <textarea id="text_md" name="text_md" rows="5" cols="40" required>{{ talk.text_md }}</textarea>
             </div>
+            <div class="cf"></div>
 
             {% for link in talk.links %}
             <div class="pure-control-group">

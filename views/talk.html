@@ -30,7 +30,7 @@
       </ul>
       <li><h3>概要</h3></li>
       <ul>
-        <li>{{ talk.text_md | nl2br }}</li>
+        <div class="md">{{ talk.text_md | escape('html') | markdown }}</div>
       </ul>
       <li><h3>リンク</h3></li>
       <ul>
