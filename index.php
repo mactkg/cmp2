@@ -70,7 +70,13 @@ $app->map('/events/:id/edit', function ($id) use ($app) {
   if ($app->request->isGet()) {
     $app->render('event_form.html', array('post_to' => $event->edit_url($params), 'event' => $event));
   } else if ($app->request->isPost()) {
-    update_event_by_id($id, $app->request->params());
+    $result = update_event_by_id($id, $app->request->params());
+    if($result == -1) {
+      $app->flash('error', 'エラーが発生しました。');
+    } else {
+      $url = $app->request->getUrl().$event->edit_url(array("key" => $event->passkey));
+      $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
+    }
     $app->redirect('/events/' . $id);
   }
 })->via('GET', 'POST')
@@ -81,8 +87,17 @@ $app->map('/events/new', function () use ($app) {
     $app->render('event_form.html', array('post_to' => '/events/new'));
   } else if ($app->request->isPost()) {
     $params = $app->request->params();
-    $id = create_event($app->request->params());
-    $app->redirect('/events/'.$id);
+    $result = create_event($app->request->params());
+    
+    if($result == -1) {
+      $app->flash('error', 'エラーが発生しました。');
+      $app->redirect('/');
+    } else {
+      $event = find_event_by_id($result);
+      $url = $app->request->getUrl().$event->edit_url(array("key" => $event->passkey));
+      $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
+      $app->redirect('/events/'.$event->id);
+    }
   }
 })->via('GET', 'POST');
 
@@ -119,14 +134,15 @@ $app->map('/talks/:id/edit', function ($id) use ($app) {
   if ($app->request->isGet()) {
     $app->render('talk_form.html', array('post_to' => $talk->edit_url($params), 'talk' => $talk));
   } else if ($app->request->isPost()) {
-    $result = update_talk_by_id($id, $params);
-    if($result == -1) {
+    $id = update_talk_by_id($id, $params);
+    if($id == -1) {
       $app->flash('error', 'エラーが発生しました。');
+      $app->redirect('/');
     } else {
       $url = $app->request->getUrl().$talk->edit_url(array("key" => $talk->passkey));
       $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
+      $app->redirect('/talks/' . $talk->id);
     }
-    $app->redirect('/events/' . $talk->event_id);
   }
 })->via('GET', 'POST')
   ->conditions(array('id' => '[0-9]+'));
@@ -143,7 +159,15 @@ $app->map('/talks/new', function () use ($app) {
     $app->render('talk_form.html', array('event_id' => $event_id, 'post_to' => '/talks/new?'.http_build_query($params)));
   } else if ($app->request->isPost()) {
     $id = create_talk_with_event_id($event_id, $params);
-    $app->redirect('/talks/'.$id);
+    if($id == -1) {
+      $app->flash('error', 'エラーが発生しました。');
+      $app->redirect('/');
+    } else {
+      $talk = find_talk_by_id($id);
+      $url = $app->request->getUrl().$talk->edit_url(array("key" => $talk->passkey));
+      $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
+      $app->redirect('/talks/'.$id);
+    }
   }
 })->via('GET', 'POST');
 
