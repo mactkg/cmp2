@@ -41,11 +41,11 @@ a {
 
 #flash a {
   font-weight: bold;
-  color: #edb087; /* 黄色にするといいかも */
+  color: #f2ca27
 }
 
 #flash a:hover {
-  color: #eaa270;
+  color: #f5d657;
 }
 
 #flash p {
