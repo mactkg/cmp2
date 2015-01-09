@@ -1,1 +1,1 @@
-DROP DATABASE fmfes, fmfes_test
+DROP DATABASE IF EXISTS fmfes;

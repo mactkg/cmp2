@@ -282,7 +282,28 @@ function find_talks_by_event_id($event_id, $args) {
   return $talks;
 }
 
+# event_idで最後のtalkを取得する
+# $event_id: イベントのID
+function find_final_talk_by_event_id($event_id) {
+  $pdo = get_db_connection();
+  $stmt = $pdo->prepare('SELECT * FROM talks
+                         WHERE
+                           event_id=? and sequence_to_id is NULL');
+  $stmt->setFetchMode(PDO::FETCH_CLASS, 'Talk');
+  $stmt->execute(array($event_id));
+  $talk = $stmt->fetch(PDO::FETCH_CLASS);
+
+  close_db_connection($pdo);
+
+  if($talk != NULL) {
+    $talk->decode_json();
+  }
+
+  return $talk;
+}
+
 # talkを作成する
+# sequence系は自動で後ろに挿入
 # event_id: 紐づくEventのID(Integer, required)
 # array
 #   - title: タイトル(String, required)
@@ -296,6 +317,7 @@ function find_talks_by_event_id($event_id, $args) {
 # 戻り値はID
 function create_talk_with_event_id($event_id, $params) {
   $event = find_event_by_id($event_id);
+  $talk_from = find_final_talk_by_event_id($event_id);
   if($event == NULL) {
     throw new Exception('event not found');
   }
@@ -315,13 +337,17 @@ function create_talk_with_event_id($event_id, $params) {
   $members = array_map(function($name, $role) {
     return array("name" => $name, "role" => $role);
   }, $members_name, $members_role);
-  
+
+  dump($talk_from);
+  dump($talk_from->id);
+
+  // Talkオブジェクトを作る
   $talk = new Talk;
   $talk->title = $params['title'];
   $talk->team_name = $params['team_name'];
   $talk->text_md = $params['text_md'];
   $talk->img_url = $params['img_url'];
-  $talk->sequence = $event->sequence_max + 1;
+  $talk->sequence_from_id = is_null($talk_from->id) ? NULL : $talk_from->id;
   $talk->event_id = $event_id;
   $talk->passkey = $talk->generate_pass();
   $talk->members = $members;
@@ -335,20 +361,13 @@ function create_talk_with_event_id($event_id, $params) {
     print_stdout($e->getMessage());
     print_stdout(var_dump($talk));
   }
+  
+  dump($talk);
 
+  // DBとの通信開始
   $pdo = get_db_connection();
-  $pdo->beginTransaction();
 
-  $stmt = $pdo->prepare('UPDATE events
-      SET
-        sequence_max=?
-      WHERE
-        id=?');
-  $stmt->execute(array(
-    $event->sequence_max+1,
-    $event->id));
-
-  $stmt2 = $pdo->prepare('INSERT INTO talks (
+  $stmt = $pdo->prepare('INSERT INTO talks (
       title,
       team_name,
       members_json,
@@ -357,12 +376,12 @@ function create_talk_with_event_id($event_id, $params) {
       passkey,
       img_url,
       status,
-      sequence,
+      sequence_from_id,
       event_id,
       created_at,
       updated_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-  $stmt2->execute(array( #XXX: raw input
+  $result = $stmt->execute(array( #XXX: raw input
     $talk->title,
     $talk->team_name,
     $talk->members_json,
@@ -371,19 +390,39 @@ function create_talk_with_event_id($event_id, $params) {
     $talk->passkey,
     $talk->img_url,
     $talk->status,
-    $talk->sequence,
+    $talk->sequence_from_id,
     $talk->event_id,
     $talk->created_at,
     $talk->updated_at));
-  
-  $id = $pdo->lastInsertId();
-  if($pdo->commit() === FALSE) {
+
+  if ($result == FALSE) {
     close_db_connection($pdo);
     return -1;
-  };
-  
+  }
+
+  # 順序リストの更新
+  $id = $pdo->lastInsertId();
+  $stmt2 = $pdo->prepare('UPDATE talks
+      SET
+        sequence_to_id=?
+      WHERE
+        id=?');
+  $stmt2->execute(array(
+    $id,
+    $talk_from->id));
+
+  if ($event->first_talk_id == NULL) {
+    $stmt = $pdo->prepare('UPDATE events
+      SET
+        first_talk_id=?
+      WHERE
+        id=?');
+    $stmt->execute(array(
+      $id,
+      $event->id));
+  }
+
   close_db_connection($pdo);
-  
   return $id;
 }
 
@@ -471,4 +510,16 @@ function update_talk_by_id($id, $params) {
   close_db_connection($pdo);
   
   return $id;
+}
+
+# 順序を変更します。
+#
+
+function update_talk_sequence_by_ids($talk_id, $target_talk_id) {
+  $talk = find_talk_by_id($talk_id);
+  $target_talk = find_talk_by_id($target_talk_id);
+
+  $pdo = get_db_connection();
+
+  //transaction
 }

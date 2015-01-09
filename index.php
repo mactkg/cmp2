@@ -40,13 +40,16 @@ $app->get('/', function () use ($app) {
 ##################
 
 $app->get('/events/:id', function ($id) use ($app) {
+
   $event = find_event_by_id($id);
   $talks = find_talks_by_event_id($id, array());
+
   if (!$event) {
     $app->notFound();
   } else {
     $app->render('event.html', array('event' => $event, 'talks' => $talks));
   }
+
 })->conditions(array('id' => '[0-9]+'));
 
 
@@ -54,46 +57,49 @@ $app->get('/events/:id', function ($id) use ($app) {
 // 最後にvia()でHTTPメソッドを指定する
 // 今回は必ずkeyが必要なので１つにまとめてみた
 $app->map('/events/:id/edit', function ($id) use ($app) {
-  
+
   // key check
   if(!array_key_exists('key', $app->request->params())) {
     $app->halt(400, 'key required');
   }
-  
+
   $event = find_event_by_id($id);
   $params = $app->request->params();
   $pass = $params['key'];
   if (!$event->pass_check($pass)) {
     $app->halt(403);
   }
-  
+
   if ($app->request->isGet()) {
     $app->render('event_form.html', array('post_to' => $event->edit_url($params), 'event' => $event));
   } else if ($app->request->isPost()) {
     $result = update_event_by_id($id, $app->request->params());
+
     if($result == -1) {
       $app->flash('error', 'エラーが発生しました。');
     } else {
       $url = $app->request->getUrl().$event->edit_url(array("key" => $event->passkey));
       $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
     }
+
     $app->redirect('/events/' . $id);
   }
 })->via('GET', 'POST')
   ->conditions(array('id' => '[0-9]+'));
+
 
 $app->map('/events/new', function () use ($app) {
   if ($app->request->isGet()) {
     $app->render('event_form.html', array('post_to' => '/events/new'));
   } else if ($app->request->isPost()) {
     $params = $app->request->params();
-    $result = create_event($app->request->params());
-    
-    if($result == -1) {
+    $id = create_event($app->request->params());
+
+    if($id == -1) {
       $app->flash('error', 'エラーが発生しました。');
       $app->redirect('/');
     } else {
-      $event = find_event_by_id($result);
+      $event = find_event_by_id($id);
       $url = $app->request->getUrl().$event->edit_url(array("key" => $event->passkey));
       $app->flash('message', '編集が完了しました。 <a href="'.$url.'">'.$url.'</a> から編集できます。');
       $app->redirect('/events/'.$event->id);
@@ -111,7 +117,7 @@ $app->get('/talks/:id', function ($id) use ($app) {
   if($talk == false) {
     $app->notFound();
   }
-  
+
   fill_event_to_talk($talk);
   $app->render('talk.html', array('talk' => $talk));
 })->conditions(array('id' => '[0-9]+'));

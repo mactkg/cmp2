@@ -10,7 +10,7 @@ class Event {
   public $passkey = NULL;
   public $img_url = NULL;
   public $deadline = NULL;
-  public $sequence_max = NULL;
+  public $first_talk_id = NULL;
   public $created_at = NULL;
   public $updated_at = NULL;
 
@@ -74,7 +74,8 @@ class Talk {
   public $passkey = NULL;
   public $img_url = NULL;
   public $status = 'ready';
-  public $sequence = NULL;
+  public $sequence_from_id = NULL;
+  public $sequence_to_id = NULL;
   public $event = NULL;
   public $event_id = NULL;
   public $created_at = NULL;
