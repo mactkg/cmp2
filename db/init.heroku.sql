@@ -10,9 +10,9 @@ CREATE TABLE events (
   `deadline` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `sequence_max` int(11) NOT NULL DEFAULT '0',
+  `first_talk_id` int(11),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4; 
 
 CREATE TABLE talks (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -24,12 +24,20 @@ CREATE TABLE talks (
   `passkey` char(25) NOT NULL,
   `img_url` text,
   `status` enum('ready','talking','pause','later','done') NOT NULL,
-  `sequence` int(11) DEFAULT NULL,
+  `sequence_from_id` int(11) DEFAULT NULL,
+  `sequence_to_id` int(11) DEFAULT NULL,
   `event_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `event_id` (`event_id`),
-  UNIQUE KEY `sequence` (`sequence`,`event_id`),
-  CONSTRAINT `talks_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  UNIQUE KEY `sequence_from_id` (`sequence_from_id`),
+  UNIQUE KEY `sequence_to_id` (`sequence_to_id`),
+  FOREIGN KEY (`sequence_from_id`) REFERENCES `talks` (`id`),
+  FOREIGN KEY (`sequence_to_id`) REFERENCES `talks` (`id`),
+  FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE fmfes.events ADD
+  FOREIGN KEY (`first_talk_id`)
+  REFERENCES `talks` (`id`);
