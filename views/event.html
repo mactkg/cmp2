@@ -35,8 +35,8 @@
       <div class="talk-container pure-u-1 pure-u-md-1-3">
         <div class="talk">
           <div class="talk-header">
-            <h2><a href="/talks/{{ talk.id }}">{{ talk.title }}</a></h2>
-            <h3><a href="/talks/{{ talk.id }}">{{ talk.team_name }}</a></h3>
+            <a href="/talks/{{ talk.id }}"><h2>{{ talk.title }}</h2> </a>
+            <a href="/talks/{{ talk.id }}"><h3>{{ talk.team_name }}</h3></a>
           </div>
           <div class="talk-about">
             {% if talk.img_url %}
