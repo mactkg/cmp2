@@ -9,8 +9,7 @@
 <body>
 {% include 'header.html' with {'title': talk.title, 'subtitle': talk.team_name } %}
   <div id="links">
-      <p><a class="pure-button" href="/events/{{ talk.event_id }}">イベント一覧へ戻る</a>
-      <a class="pure-button" href="/talks/{{ talk.id }}/edit?key=abcdef">プレゼンを編集</a></p>
+      <p><a class="pure-button" href="/events/{{ talk.event_id }}">イベントへ戻る</a></p>
   </div>
   <div class="talk-details">
     <ul>
