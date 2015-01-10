@@ -87,6 +87,11 @@
             {% if talk %}
             <input type="hidden" name="event_id" value="{{ talk.event_id }}">
             {% endif %}
+            
+            <div class="pure-controls">
+              <p style="color: #c0392b;">Submitボタンを押して投稿が成功すると次ページの上部に次回編集用のURLが表示されます。保存を忘れないよう注意してください。</p>
+            </div>
+
             <div class="pure-controls">
                 <button type="submit" class="pure-button pure-button-primary">Submit</button>
             </div>
