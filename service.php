@@ -513,13 +513,157 @@ function update_talk_by_id($id, $params) {
 }
 
 # 順序を変更します。
-#
+# talk_id: 変更するもの
+# target_talk_id: talk_idが入る場所に居るtalk
+# つまり変更すると talk_id => target_talk_idになる
 
 function update_talk_sequence_by_ids($talk_id, $target_talk_id) {
   $talk = find_talk_by_id($talk_id);
   $target_talk = find_talk_by_id($target_talk_id);
+  if($talk->sequence_to_id == $target_talk->id) {
+    return True;
+  }
 
   $pdo = get_db_connection();
 
-  //transaction
+  // fetch related data
+  $stmt = $pdo->prepare("SELECT id, sequence_to_id, sequence_from_id FROM talks
+                         WHERE id IN (?, ?, ?, ?)
+                         ORDER BY id");
+  $stmt->setFetchMode(PDO::FETCH_CLASS, 'Talk');
+
+  $from = is_null($talk->sequence_from_id) ? NULL : $talk->sequence_from_id;
+  $to = is_null($talk->sequence_to_id) ? NULL : $talk->sequence_to_id;
+  $from_target = is_null($target_talk->sequence_from_id) ? NULL : $target_talk->sequence_from_id;
+  $to_target = is_null($target_talk->sequence_to_id) ? NULL : $target_talk->sequence_to_id;
+
+  $stmt->execute(array($from, $to, $from_target, $to_target));
+  $result = $stmt->fetchAll(PDO::FETCH_CLASS, 'Talk');
+  $talks_related = [];
+  array_walk($result, function($t) use (&$talks_related) { $talks_related[$t->id] = $t; });
+
+
+  // Transaction(change sequence)
+  $pdo->beginTransaction();
+
+  // READY
+  $stmt = $pdo->prepare("UPDATE talks
+                         SET
+                           sequence_from_id=?,
+                           sequence_to_id=?
+                         WHERE
+                           id=?");
+  $stmt->setFetchMode(PDO::FETCH_CLASS, 'Talk');
+
+  // remove talk
+  if(isset($talk->sequence_from_id)) {
+    $id = $talk->sequence_from_id;
+    $talks_related[$id]->sequence_to_id = $talk->sequence_to_id;
+    $stmt->execute(array($talks_related[$id]->sequence_from_id, $talks_related[$id]->sequence_to_id, $id));
+    if($id == $target_talk_id) {
+      $target_talk->sequence_to_id = $talk->sequence_to_id;
+    }
+  }
+  if(isset($talk->sequence_to_id)) {
+    $id = $talk->sequence_to_id;
+    $talks_related[$id]->sequence_from_id = $talk->sequence_from_id;
+    $stmt->execute(array($talks_related[$id]->sequence_from_id, $talks_related[$id]->sequence_to_id, $id));
+  }
+
+  // add talk
+  if(isset($target_talk->sequence_from_id)) {
+    $id = $target_talk->sequence_from_id;
+    $talks_related[$id]->sequence_to_id = $talk->id;
+    $stmt->execute(array($talks_related[$id]->sequence_from_id, $talks_related[$id]->sequence_to_id, $id));
+  }
+  $stmt->execute(array($talk->id, $target_talk->sequence_to_id, $target_talk->id));
+  $stmt->execute(array($target_talk->sequence_from_id, $target_talk->id, $talk->id));
+
+  // update event
+  if(is_null($target_talk->sequence_from_id)) {
+    $stmt2 = $pdo->prepare("UPDATE events
+                            SET
+                              first_talk_id=?
+                            WHERE
+                              id=?");
+    $stmt2->execute(array($talk->id, $talk->event_id));
+  }
+
+  $result = $pdo->commit();
+
+  close_db_connection($pdo);
+  return $result;
 }
+
+ # talkを削除します。
+# talk_id: 削除するもの
+
+function delete_talk_by_id($talk_id) {
+  $talk = find_talk_by_id($talk_id);
+
+  $pdo = get_db_connection();
+
+  // fetch related data
+  $stmt = $pdo->prepare("SELECT id, sequence_to_id, sequence_from_id FROM talks
+                         WHERE id IN (?, ?)
+                         ORDER BY id");
+  $stmt->setFetchMode(PDO::FETCH_CLASS, 'Talk');
+
+  $from = is_null($talk->sequence_from_id) ? NULL : $talk->sequence_from_id;
+  $to = is_null($talk->sequence_to_id) ? NULL : $talk->sequence_to_id;
+
+  $stmt->execute(array($from, $to));
+  $result = $stmt->fetchAll(PDO::FETCH_CLASS, 'Talk');
+  $talks_related = [];
+  array_walk($result, function($t) use (&$talks_related) { $talks_related[$t->id] = $t; });
+
+
+  // Transaction(change sequence)
+  $pdo->beginTransaction();
+
+  // update event
+  if(is_null($talk->sequence_from_id)) {
+    $stmt2 = $pdo->prepare("UPDATE events
+                            SET
+                              first_talk_id=?
+                            WHERE
+                              id=?");
+    $stmt2->execute(array($talk->sequence_to_id, $talk->event_id));
+  }
+
+  // DELETE
+  $del = $pdo->prepare("DELETE FROM talks
+                        WHERE
+                          id=?");
+  $del->execute(array($talk_id));
+
+  // READY
+  $stmt = $pdo->prepare("UPDATE talks
+                         SET
+                           sequence_from_id=?,
+                           sequence_to_id=?
+                         WHERE
+                           id=?");
+
+  // remove talk
+  if(isset($talk->sequence_from_id)) {
+    $id = $talk->sequence_from_id;
+    $talks_related[$id]->sequence_to_id = $talk->sequence_to_id;
+    $stmt->execute(array($talks_related[$id]->sequence_from_id, $talks_related[$id]->sequence_to_id, $id));
+    if($id == $target_talk_id) {
+      $target_talk->sequence_to_id = $talk->sequence_to_id;
+    }
+  }
+  if(isset($talk->sequence_to_id)) {
+    $id = $talk->sequence_to_id;
+    $talks_related[$id]->sequence_from_id = $talk->sequence_from_id;
+    $stmt->execute(array($talks_related[$id]->sequence_from_id, $talks_related[$id]->sequence_to_id, $id));
+  }
+
+  $result = $pdo->commit();
+
+  close_db_connection($pdo);
+  return $result;
+}
+
+ 
