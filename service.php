@@ -260,7 +260,7 @@ function find_talks_by_event_id($event_id, $args) {
     $offset = $args['offset'];
   }
   
-  $limit = 20;
+  $limit = 60;
   if(array_key_exists('limit', $args)) {
     $limit = $args['limit'];
   }
