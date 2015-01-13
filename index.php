@@ -183,7 +183,9 @@ $app->map('/talks/new', function () use ($app) {
 #################
 
 $app->group('/api', function() use ($app) {
-  
+  $app->response()->header('Access-Control-Allow-Origin: *');
+  $app->response()->header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+
   #################
   #  API::Events  #
   #################
@@ -268,7 +270,9 @@ $app->notFound(function () use ($app) {
 #  おまけ  #
 ###########
 
-$app->get('/route', function() use ($app) {
+$app->get('/route/:from/:to', function($from, $to) use ($app) {
+  $result = delete_talk_by_id($from);
+  dump($result);
   $app->render('route.html', array());
 });
 
