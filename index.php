@@ -52,6 +52,24 @@ $app->get('/events/:id', function ($id) use ($app) {
 
 })->conditions(array('id' => '[0-9]+'));
 
+$app->get('/events/:id/backyard', function ($id) use ($app) {
+  if(!array_key_exists('key', $app->request->params())) {
+    $app->halt(400, 'key required');
+  }
+  $event = find_event_by_id($id);
+  $params = $app->request->params();
+  $pass = $params['key'];
+  if (!$event->pass_check($pass)) {
+    $app->halt(403);
+  }
+  
+  if (!$event) {
+    $app->notFound();
+  } else {
+    $app->render('backyard.html', array('event' => $event));
+  }
+
+})->conditions(array('id' => '[0-9]+')); 
 
 // mapはいろいろなHTTPメソッドを受け取れる
 // 最後にvia()でHTTPメソッドを指定する
