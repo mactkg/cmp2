@@ -183,8 +183,8 @@ $app->map('/talks/new', function () use ($app) {
 #################
 
 $app->group('/api', function() use ($app) {
-  $app->response()->header('Access-Control-Allow-Origin: *');
-  $app->response()->header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
+  $app->response()->header('Access-Control-Allow-Origin', '*');
+  $app->response()->header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
   #################
   #  API::Events  #
@@ -236,7 +236,7 @@ $app->group('/api', function() use ($app) {
   
   $app->get('/talks/:id', function ($id) use ($app) {
     $talk = find_talk_by_id($id);
-    
+   
     if ($talk) {
       $app->response()->header('Content-Type', 'application/json');
       echo json_encode($talk, JSON_UNESCAPED_UNICODE);
