@@ -213,7 +213,7 @@ $app->group('/api', function() use ($app) {
     
     if ($event) {
       $app->response()->header('Content-Type', 'application/json');
-      echo json_encode($event, JSON_UNESCAPED_UNICODE);
+      echo json_encode($event->inspect(), JSON_UNESCAPED_UNICODE);
     } else {
       $app->response()->header('Content-Type', 'application/json');
       echo json_encode(array('error' => 'event is not found'));
@@ -226,7 +226,7 @@ $app->group('/api', function() use ($app) {
     
     if ($talks) {
       $app->response()->header('Content-Type', 'application/json');
-      echo json_encode($talks, JSON_UNESCAPED_UNICODE);
+      echo json_encode(array_map(function($t) { return $t->inspect(); }, $talks), JSON_UNESCAPED_UNICODE);
     } else {
       $app->response()->header('Content-Type', 'application/json');
       echo json_encode(array());
@@ -257,7 +257,7 @@ $app->group('/api', function() use ($app) {
    
     if ($talk) {
       $app->response()->header('Content-Type', 'application/json');
-      echo json_encode($talk, JSON_UNESCAPED_UNICODE);
+      echo json_encode($talk->inspect(), JSON_UNESCAPED_UNICODE);
     } else {
       $app->response()->status(404);
     }
@@ -281,17 +281,6 @@ $app->group('/api', function() use ($app) {
 $app->notFound(function () use ($app) {
   $app->flash('error', 'sorry! page is not found');
   $app->redirect('/');
-});
-
-
-###########
-#  おまけ  #
-###########
-
-$app->get('/route/:from/:to', function($from, $to) use ($app) {
-  $result = delete_talk_by_id($from);
-  dump($result);
-  $app->render('route.html', array());
 });
 
 $app->run();
