@@ -69,19 +69,24 @@ p#time {
 }
 
 
-#button1 {
+#button-player {
   position: absolute;
   top: 40%;
-  left: 0%;
+  left: 5%;
 }
 
-#button2 {
+#ppbutton {
+  width: 80px;
+  height: 40px;
+}
+
+#time-selector {
   position: absolute;
   top: 50%;
-  left: 35%;
+  left: 30%;
 }
 
-#button3 {
+#button-timer-set {
   position: absolute;
   top: 35%;
   left: 60%;

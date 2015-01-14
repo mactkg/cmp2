@@ -33,23 +33,23 @@
             <p id="time">2:41</p>
         </div>
         <div id="backyard-button" class="pure-u-12-24">
-            <div id="button1">
+            <div id="button-player">
               <button id="ppbutton" class="pure-button play"><i class="fa fa-play"></i></button>
             </div>
             <div id="time-selector">
-            <select name="min">
-            {% for i in 0..10 %}
-              <option value={{i}}>{{i}}</option>
-            {% endfor %}
-            </select> :
-            <select name="sec">
-            {% for i in 0..59 %}
-              <option value={{i}}>{{i}}</option>
-            {% endfor %}
-            </select>
+              <select name="min">
+              {% for i in 0..10 %}
+                <option value={{i}}>{{i}}</option>
+              {% endfor %}
+              </select> :
+              <select name="sec">
+              {% for i in 0..59 %}
+                <option value={{i}}>{{i}}</option>
+              {% endfor %}
+              </select>
             </div>
-            <div id="button3">
-            <button id="settime" class="pure-button">Timer<br>SET</button>
+            <div id="button-timer-set">
+              <button id="settime" class="pure-button">Timer<br>SET</button>
             </div>
         </div>
       </div>
