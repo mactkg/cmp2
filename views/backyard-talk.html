@@ -1,0 +1,35 @@
+{% raw %}
+<script id="talk-tmpl" type="text/x-jsrender">
+<div id="backyard-talk" class="pure-u-1">
+  <div id="backyard-talk-detail" class="pure-u-20-24">
+    <div class="pure-u-10-24">
+      <div id="talk-title">
+        <p>{{>title}}</p>
+      </div>
+      <div id="talk-teamname">
+        <p>TeamName:</p>
+        <p>{{>team_name}}</p>
+      </div>
+    </div>
+    <div id="talk-members" class="pure-u-8-24">
+      {{for members}}
+        <p>{{>name}}</p>
+      {{/for}}
+    </div>
+    <div id="talk-img" class="pure-u-5-24">
+      {{if img_url}}
+      <img src="{{>img_url}}">
+      {{else}}
+      <img src="{{>img_url}}">
+      {{/if}}
+    </div>
+  </div>
+  <div id="backyard-talk-skip" class="pure-u-2-24">
+    <form>
+      <input type="submit" value="SKIP">
+    </form>
+  </div>
+  <p> </p>
+</div>
+</script>
+{% endraw %}

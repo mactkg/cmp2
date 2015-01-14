@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset=UTF-8>
+  <title>Backyard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=1">
+
+  <script type="text/javascript">
+  var event_id={{ event.id }}
+  </script>
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/js/jsrender.min.js"></script>
+  <script type="text/javascript" src="/js/backyard.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+  <!--[if lte IE 8]>
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" type="text/css" href="/css/backyard.css">
+  {% include 'backyard-talk.html' %}
+</head>
+
+<body>
+  <div id="container">
+    <div class="fixation">
+{% include 'header.html' %}
+      <div id="backyard-header" class="pure-g">
+        <div id="backyard-timer" class="inner pure-u-12-24">
+            <p id="time">2:41</p>
+        </div>
+        <div id="backyard-button" class="pure-u-12-24">
+            <div id="button1">
+              <button id="ppbutton" class="pure-button play"><i class="fa fa-play"></i></button>
+            </div>
+            <div id="time-selector">
+            <select name="min">
+            {% for i in 0..10 %}
+              <option value={{i}}>{{i}}</option>
+            {% endfor %}
+            </select> :
+            <select name="sec">
+            {% for i in 0..59 %}
+              <option value={{i}}>{{i}}</option>
+            {% endfor %}
+            </select>
+            </div>
+            <div id="button3">
+            <button id="settime" class="pure-button">Timer<br>SET</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="backyard-tabs" class="tabbox pure-g">
+      <div class="fixation tabs-menu pure-u-1">
+      <p>
+        <a href="#tab-yet" class="tab1" onclick="changeTab('tab-yet'); return false;">まだ</a>
+        <a href="#tab-done" class="tab2" onclick="changeTab('tab-done'); return false;">終了</a>
+        </p>
+      </div>
+
+      <div id="empty">
+        <p> </p>
+      </div>
+
+      <div class="tab-content pure-u-1">
+        <div id="tab-yet" class="tab">
+          <div id="backyard-talks" class="pure-g">
+          </div>
+        </div>
+
+        <div id="tab-done" calss="tab">
+          <div id="backyard-talks" class="pure-g">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>

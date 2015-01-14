@@ -18,7 +18,7 @@
 <div id = "links">
   {% if event %}
   <a class="pure-button" href="/events/{{ event.id }}">イベントに戻る</a>
-  <a class="pure-button" href="backyard">バックヤードへのリンク</a>
+  <a class="pure-button" href="/events/{{ event.id }}/backyard?key={{ event.passkey }}">バックヤードへのリンク</a>
   {% else %}
   <a class="pure-button" href="/">トップに戻る</a>
   {% endif %}
