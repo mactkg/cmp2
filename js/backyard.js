@@ -32,13 +32,27 @@ window.onload = function() {
     .success(function(data) {
       data.forEach(function(t) {
         console.log(t);
-        $($("#talk-tmpl").render(t)).appendTo("#tab-yet");
+        var $talk = $($("#talk-tmpl").render(t));
+        $talk.attr('id', t.id);
+        $talk.on('click', 'button[name=show]', function() {
+          var id = $(this).closest('.backyard-talk').attr('id');
+          ws.send(JSON.stringify({f: "update_talk", v: id}));
+        });
+        $("#tab-yet > .backyard-talks").append($talk);
       });
     });
+
+  $("#backyard-button form").submit(function() {
+    return false;
+  });
 
   $("#settime").on('click', function(e) {
     var sec = parseInt($("select[name=min]").val())*60 + parseInt($("select[name=sec]").val());
     ws.send(JSON.stringify({f: "timer_set", v: sec}));
+  });
+
+  $("#button-notify").on('click', function(e) {
+    ws.send(JSON.stringify({f: "info", v: $("input[name=text-notify]").val()}));
   });
 
   $("#ppbutton").on('click', function(e) {
@@ -67,19 +81,7 @@ window.onload = function() {
     if (data.type === "notify") {
 
       // update information
-      if (content.f === "update_talk") {
-        var host = getParam()['apihost'] || "fmfes-herokubutton.herokuapp.com";
-        $.getJSON('http://'+host+'/api/talks/' + content.v)
-          .success(function(data) {
-            console.log(data);
-            $("#title")
-              .html(data.title)
-              .velocity("fadeIn", { duration: 1000 });
-            $("#team")
-              .html(data.team_name)
-              .velocity("fadeIn", { duration: 1000 });
-          });
-      } else if (content.f === "info") {
+      if (content.f === "info") {
         $("#info")
           .html(content.v)
           .velocity("fadeIn", { duration: 1000 });

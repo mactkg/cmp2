@@ -1,35 +1,35 @@
 {% raw %}
 <script id="talk-tmpl" type="text/x-jsrender">
-<div id="backyard-talk" class="pure-u-1">
-  <div id="backyard-talk-detail" class="pure-u-20-24">
-    <div class="pure-u-10-24">
-      <div id="talk-title">
-        <p>{{>title}}</p>
-      </div>
-      <div id="talk-teamname">
-        <p>TeamName:</p>
-        <p>{{>team_name}}</p>
-      </div>
-    </div>
-    <div id="talk-members" class="pure-u-8-24">
-      {{for members}}
-        <p>{{>name}}</p>
-      {{/for}}
-    </div>
-    <div id="talk-img" class="pure-u-5-24">
+<div class="backyard-talk pure-u-1">
+  <header>
+    <span class="talk-title">
+      {{>title}}
+    </span>
+    <span class="talk-teamname">
+      TeamName: {{>team_name}}
+    </span>
+  </header>
+  <div class="backyard-talk-detail pure-u-20-24">
+    <div class="talk-img pure-u-5-24">
       {{if img_url}}
       <img src="{{>img_url}}">
       {{else}}
       <img src="{{>img_url}}">
       {{/if}}
     </div>
+    <div class="talk-members pure-u-19-24">
+      <ul>
+      {{for members}}
+        <li class="talk-member">{{>name}}</li>
+      {{/for}}
+      </ul>
+    </div>
   </div>
-  <div id="backyard-talk-skip" class="pure-u-2-24">
-    <form>
-      <input type="submit" value="SKIP">
-    </form>
+  <div class="backyard-buttons pure-u-2-24">
+    <button class="pure-button" name="show">Show</button>
+    <button class="pure-button" name="next">Next</button>
+    <button class="pure-button" name-"skip">Skip</button>
   </div>
-  <p> </p>
 </div>
 </script>
 {% endraw %}

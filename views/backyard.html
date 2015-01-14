@@ -33,9 +33,7 @@
             <p id="time">2:41</p>
         </div>
         <div id="backyard-button" class="pure-u-12-24">
-            <div id="button-player">
-              <button id="ppbutton" class="pure-button play"><i class="fa fa-play"></i></button>
-            </div>
+          <form class="pure-form">
             <div id="time-selector">
               <select name="min">
               {% for i in 0..10 %}
@@ -49,8 +47,16 @@
               </select>
             </div>
             <div id="button-timer-set">
-              <button id="settime" class="pure-button">Timer<br>SET</button>
+              <button id="settime" class="pure-button">SET</button>
             </div>
+            <div id="button-player">
+              <button id="ppbutton" class="pure-button play"><i class="fa fa-play"></i></button>
+            </div>
+            <div id="notify">
+                <input type="text" name="text-notify">
+                <button id="button-notify" class="pure-button">Notify!</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -58,8 +64,8 @@
     <div id="backyard-tabs" class="tabbox pure-g">
       <div class="fixation tabs-menu pure-u-1">
       <p>
-        <a href="#tab-yet" class="tab1" onclick="changeTab('tab-yet'); return false;">まだ</a>
-        <a href="#tab-done" class="tab2" onclick="changeTab('tab-done'); return false;">終了</a>
+        <a href="#tab-yet" class="tab1 pure-u-1" onclick="changeTab('tab-yet'); return false;">まだ</a>
+        <a href="#tab-done" class="tab2 pure-u-1" onclick="changeTab('tab-done'); return false;">終了</a>
         </p>
       </div>
 
@@ -69,12 +75,12 @@
 
       <div class="tab-content pure-u-1">
         <div id="tab-yet" class="tab">
-          <div id="backyard-talks" class="pure-g">
+          <div class="backyard-talks pure-g">
           </div>
         </div>
 
         <div id="tab-done" calss="tab">
-          <div id="backyard-talks" class="pure-g">
+          <div class="backyard-talks pure-g">
           </div>
         </div>
 

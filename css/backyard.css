@@ -42,7 +42,7 @@ html, body {
 }
 
 #backyard-header{
-    background: #a8ffb9;
+  background: #fff;
   height: 150px;
 }
 
@@ -63,70 +63,68 @@ p#time {
   margin: 0;
 }
 
-#backyard-button button{
-  
- 
-}
-
-
-#button-player {
-  position: absolute;
-  top: 40%;
-  left: 5%;
-}
-
-#ppbutton {
+#backyard-button button {
   width: 80px;
   height: 40px;
 }
 
+#button-player {
+  position: absolute;
+  top: 30px;
+  left: 16px;
+}
+
 #time-selector {
   position: absolute;
-  top: 50%;
-  left: 30%;
+  top: 38px;
+  left: 120px;
 }
 
 #button-timer-set {
   position: absolute;
-  top: 35%;
-  left: 60%;
+  top: 30px;
+  left: 250px;
+}
+
+#notify {
+  position: absolute;
+  top: 90px;
+  left: 16px;
 }
 
 #backyard-talks {
 
 }
 
-#backyard-talk {
+.backyard-talk {
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
   height: auto;
-  background: #dee891;
-}
-
-#backyard-talk-detail {
-  padding-left: 16px;
   background: #eeeeee;
+  padding: 12px;
 }
 
-#backyard-talk-skip{
-  background: #555555;
+.backyard-buttons {
 
 }
 
-#backyard-talk-skip input{
-  width: 150%;
-  font-size: 1em;
-} 
+.backyard-buttons button {
+  margin: 2px 0;
+  width: 6em;
+}
 
-#talk-title{
+.talk-title{
   font-size: 40px;
   font-family: "03SmartFontUI";
 }
 
-#talk-teamname{
-
+.talk-teamname{
+  font-weight: bold;
+  color: #676767;
 }
 
-#talk-member{
-
+.talk-members ul {
+  margin: 0px;
 }
 
 #talk-img img{
@@ -194,12 +192,10 @@ p#time {
   border-left: 10px solid #70aac8;
   border-right: 10px solid #70aac8;
   border-bottom: 10px solid #70aac8;
-  background: #ccccff;
 }
 
 #tab-done{
   border-left: 10px solid #e39999;
   border-right: 10px solid #e39999;
   border-bottom: 10px solid #e39999;
-  background: #ffcccc;
 }
