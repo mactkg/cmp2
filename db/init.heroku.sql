@@ -38,6 +38,6 @@ CREATE TABLE talks (
   FOREIGN KEY (`event_id`) REFERENCES `events` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
 
-ALTER TABLE fmfes.events ADD
+ALTER TABLE events ADD
   FOREIGN KEY (`first_talk_id`)
   REFERENCES `talks` (`id`);
